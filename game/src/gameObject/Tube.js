@@ -17,11 +17,21 @@ Tube.prototype.makePath = function () {
     var y = 0;
     var z = 0;
 
-    for( var i=0; i< 100; i++){
-        path.push( new THREE.Vector3( x, y, z) );
-        x += Math.random() * 50 - 25;
-        y += 100;
-        z += Math.random() * 50 - 25;
+    var d = 300;
+    var v = new THREE.Vector3( 0, d ,0 );
+
+    for( var i=0; i< 1000; i++){
+        path.push( new THREE.Vector3( x, y, z ) );
+
+        if(Math.random() > 0.75){
+            //turn.
+            v.x = Math.random() * d - d*0.5;
+            v.z = Math.random() * d - d*0.5;
+        }
+
+        x += v.x;
+        y += v.y;
+        z += v.z;
     }
 
     return path;
@@ -32,11 +42,12 @@ Tube.prototype.buildMesh = function () {
 
     this.path = this.makePath();
 
-    var w = 100;
+
     var v = 0;
 
     for( var i=0; i<this.path.length; i++ ){
 
+        var w = 100 + Math.random() * 50;
         var v0 = new THREE.Vector3( -w, 0, -w);
         var v1 = new THREE.Vector3( w, 0, -w);
         var v2 = new THREE.Vector3( -w, 0, w);
@@ -50,6 +61,8 @@ Tube.prototype.buildMesh = function () {
             var m = new THREE.Matrix4();
             m.makeRotationZ( Math.atan2(b.y - a.y,b.x - a.x) - Math.PI * 0.5);
             m.makeRotationX( Math.atan2(b.y - a.y,b.z - a.z) - Math.PI * 0.5);
+
+            m.makeRotationY( Math.random() * Math.PI * 0.25 );
 
             v0.applyMatrix4(m);
             v1.applyMatrix4(m);

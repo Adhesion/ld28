@@ -32,7 +32,7 @@
       <file leaf-file-name="Main.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="248" column="44" selection-start="6794" selection-end="6794" vertical-scroll-proportion="0.0">
+            <state line="248" column="44" selection-start="6786" selection-end="6786" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -40,19 +40,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tube.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Tube.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="0" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
+            <state line="19" column="13" selection-start="390" selection-end="390" vertical-scroll-proportion="0.19883041">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GameController.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="17" selection-start="1608" selection-end="1608" vertical-scroll-proportion="0.36506024">
+            <state line="55" column="17" selection-start="1608" selection-end="1608" vertical-scroll-proportion="-12.12">
               <folding />
             </state>
           </provider>
@@ -101,9 +101,9 @@
         <option value="$PROJECT_DIR$/src/gameObject/Avatar.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/Main.js" />
-        <option value="$PROJECT_DIR$/src/gameObject/Tube.js" />
         <option value="$PROJECT_DIR$/src/gameObject/GameObject.js" />
         <option value="$PROJECT_DIR$/src/controller/GameController.js" />
+        <option value="$PROJECT_DIR$/src/gameObject/Tube.js" />
       </list>
     </option>
   </component>
@@ -349,9 +349,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="17" selection-start="1608" selection-end="1608" vertical-scroll-proportion="-12.12">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="248" column="44" selection-start="6794" selection-end="6794" vertical-scroll-proportion="0.0">
+        <state line="248" column="44" selection-start="6786" selection-end="6786" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -360,14 +367,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="0" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="17" selection-start="1608" selection-end="1608" vertical-scroll-proportion="0.36506024">
+        <state line="19" column="13" selection-start="390" selection-end="390" vertical-scroll-proportion="0.19883041">
           <folding />
         </state>
       </provider>
