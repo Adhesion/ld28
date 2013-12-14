@@ -112,7 +112,7 @@ function Main() {
 	this.loader.load( this.getAssets() );
 
 	// start the shit
-	this.lastFrame = Date.now();
+	this.lastFrame = 0;
 	this.resize();
 	this.update();
 
@@ -179,15 +179,15 @@ Main.prototype.resize = function (event) {
 	this.renderer.setSize(width, height);
 };
 
-Main.prototype.update = function () {
+Main.prototype.update = function (newFrame) {
     TWEEN.update();
     var op;
 	while( op = this.operations.pop() ) {
 		op(this);
 	}
 
-	var delta = Date.now() - this.lastFrame;
-    this.lastFrame = Date.now();
+	var delta = newFrame - this.lastFrame;
+	this.lastFrame = newFrame;
 
 	//update everything then render.
 	for( var controller in this.controllers ) {
