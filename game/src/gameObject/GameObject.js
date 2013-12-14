@@ -1,13 +1,21 @@
-function GameObject(geometry, color, wireColor) {
-    this.wireColor = wireColor ? wireColor : 0xffffff;
-    this.color = color ? color : 0xffffff;
+function GameObject(data) {
+	var geometry = data.geometry;
+	this.wireColor = data.wireColor || 0xffffff;
+	this.color = data.color || 0xffffff;
 
-    this.pos = new THREE.Vector3(0, 0, 0);
-    this.vel = new THREE.Vector3(0, 0, 0);
-    this.rotation = new THREE.Vector3(0, 0, 0);
+	this.pos = new THREE.Vector3(0, 0, 0);
+	this.vel = new THREE.Vector3(0, 0, 0);
+	this.rotation = new THREE.Vector3(0, 0, 0);
 
     //this.solidMat = new THREE.MeshPhongMaterial( { color: this.color, transparent:true, shading: THREE.FlatShading  } );
-    this.wireMat = new THREE.MeshBasicMaterial({ color:this.wireColor, wireframe:false, shading: THREE.FlatShading  });
+    this.wireMat = new THREE.MeshBasicMaterial({
+		color:this.wireColor,
+		wireframe:false,
+		shading: THREE.FlatShading
+	});
+	if( data.doubleSided ) {
+		this.wireMat.side = THREE.DoubleSide;
+	}
 
     //this.wireMat.opacity = 0.75;
     //this.wireMat.blending = THREE.AdditiveAlphaBlending;
