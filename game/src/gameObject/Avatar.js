@@ -3,9 +3,9 @@ function Avatar(tube) {
 		geometry: this.buildMesh(),
 		color: 0xf2e85c,
 		wireColor: 0xff0000,
-		doubleSided: true,
+		doubleSided: true
 	});
-	this.speed = 300;
+	this.speed = 500;
 	this.tube = tube;
 	this.pos.z -= 100;
 	this.vel.x = 0;

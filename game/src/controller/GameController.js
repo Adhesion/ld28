@@ -21,6 +21,8 @@ function GameController(main, skybox) {
     this.nextChain = null;
     this.chain = [];
 
+    this.spawnTimer = 0;
+
     this.main.state.scene.fog = new THREE.Fog( 0x2e2e2e, 1, 2000 );
 
     this.sway = 0;
@@ -48,7 +50,6 @@ function GameController(main, skybox) {
 
     window.game_win = false;
 
-    this.makePathObjects();
 }
 
 GameController.prototype.update = function (delta) {
@@ -57,7 +58,9 @@ GameController.prototype.update = function (delta) {
 	var shift = new THREE.Vector3(0, -100, 0);
 	this.camHolder.position.copy(this.avatar.holder.position);
 	this.camHolder.position.add( shift );
-	this.ambientCameraMovement(delta/1000);
+
+    this.ambientCameraMovement(delta/1000);
+    this.updatePathObjects(delta);
 };
 
 GameController.prototype.ambientCameraMovement = function (dt) {
@@ -70,6 +73,7 @@ GameController.prototype.ambientCameraMovement = function (dt) {
         x += Math.random() * this.shake * 4 - this.shake * 2;
         z += Math.random() * this.shake * 4 - this.shake * 2;
     }
+
     this.camera.position.x = x;
     this.camera.position.z = z;
     this.camera.lookAt(this.cameraTarget);
@@ -91,17 +95,28 @@ GameController.prototype.gameOver = function () {
     });
 };
 
-GameController.prototype.makePathObjects = function () {
-    for( var i=0; i<10; i++){
-        var pathObject = new PathObject( this.tube.path[i].clone() );
-        this.main.state.scene.add( pathObject.holder );
-        this.pathObjects.push(pathObject);
+
+GameController.prototype.updatePathObjects = function (delta) {
+    this.spawnTimer -= delta/1000;
+
+    if(this.spawnTimer <= 0){
+       this.spawnTimer = 1.0;
+       if( this.avatar.tubeIndex + 3 < this.tube.path.length ){
+           var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone() );
+           this.main.state.scene.add( pathObject.holder );
+           this.pathObjects.push( pathObject );
+       }
     }
-};
-
-
-GameController.prototype.updatePathObjects = function (dt) {
+    var remove = [];
     for( var i=0; i<this.pathObjects.length; i++){
-        this.pathObjects[i].update(dt);
+        this.pathObjects[i].update(delta);
+        if(!this.pathObjects[i].alive){
+            remove.push(this.pathObjects[i]);
+        }
+    }
+
+    for( var i=0; i<remove.length; i++){
+        this.main.state.scene.remove( remove[i].holder );
+        this.pathObjects.splice( this.pathObjects.indexOf(remove[i]), 1);
     }
 };

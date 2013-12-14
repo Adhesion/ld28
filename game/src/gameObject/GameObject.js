@@ -31,9 +31,10 @@ function GameObject(data) {
     this.alive = true;
 }
 
-GameObject.prototype.update = function (dt) {
+GameObject.prototype.update = function (delta) {
 
     if(!dt) dt = 0;
+    var dt = delta/1000;
 
     this.pos.x += this.vel.x * dt * this.timeMult;
     this.pos.y += this.vel.y * dt * this.timeMult;
