@@ -1,9 +1,14 @@
 function Tube() {
-    GameObject.call(this, this.buildMesh(), 0xf2e85c, 0xdbd14c);
-    this.pos.y = -70;
+	GameObject.call(this, {
+		geometry: this.buildMesh(),
+		color: 0xf2e85c,
+		wireColor: 0xdbd14c,
+		doubleSided: false
+	});
+	this.pos.y = -70;
 }
 
-Tube.prototype = new GameObject();
+Tube.prototype = Object.create(GameObject.prototype);
 Tube.prototype.constructor = Tube;
 
 Tube.prototype.update = function (dt) {

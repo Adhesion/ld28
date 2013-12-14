@@ -1,5 +1,9 @@
 function Star() {
-    GameObject.call(this, this.buildMesh(), 0x262626, 0x262626);
+    GameObject.call(this, {
+		geometry: this.buildMesh(),
+		color: 0x262626,
+		wireColor: 0x262626
+	});
     this.wire.scale = new THREE.Vector3(1, 1, 1);
     //this.wireMat.opacity = 0.25;
     //this.solidMat.opacity = 0.5;
@@ -14,7 +18,7 @@ function Star() {
     //this.wireMat.blending = THREE.SubtractiveBlending;
 }
 
-Star.prototype = new GameObject();
+Star.prototype = Object.create(GameObject.prototype);
 Star.prototype.constructor = Star;
 
 Star.prototype.update = function (dt) {

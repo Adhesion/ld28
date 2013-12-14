@@ -1,5 +1,9 @@
 function Particle(pos, color, wireColor, size, life, speed) {
-    GameObject.call(this, this.buildMesh(size), color, wireColor);
+    GameObject.call(this, {
+		geometry: this.buildMesh(size),
+		color: color,
+		wireColor: wireColor
+	});
     this.life = this.maxLife = life;
     this.pos = pos;
     this.rotation = new THREE.Vector3(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2);
@@ -18,7 +22,7 @@ function Particle(pos, color, wireColor, size, life, speed) {
     this.wireMat.blending = THREE.AdditiveAlphaBlending;
 }
 
-Particle.prototype = new GameObject();
+Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
 Particle.prototype.update = function (dt) {

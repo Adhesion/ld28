@@ -4,8 +4,6 @@ function GameController(main, skybox) {
     this.skybox = skybox;
     this.input = new Input();
 
-    this.tubeIndex = 0;
-
     this.camera = this.main.state.camera;
     this.camera.up = new THREE.Vector3( 0, 0, 1 );
     this.cameraTarget = new THREE.Vector3();
@@ -45,6 +43,8 @@ function GameController(main, skybox) {
 
     this.tube = new Tube();
     this.main.state.scene.add( this.tube.holder );
+	this.avatar = new Avatar( this.tube );
+	this.main.state.scene.add( this.avatar.holder );
 
     window.game_win = false;
 
@@ -52,31 +52,12 @@ function GameController(main, skybox) {
 }
 
 GameController.prototype.update = function (delta) {
-    this.checkInput();
-    var dt = delta/1000;
-
-    var speed = 300;
-    var dv = new THREE.Vector3(0,0,0);
-    dv = dv.subVectors( this.tube.path[this.tubeIndex], this.camHolder.position );
-
-    //console.log("" + dv.length() + " / " + (speed * dt * 2) );
-    if(dv.length() <= speed * dt ){
-        this.tubeIndex++;
-        if(this.tubeIndex >= this.tube.path.length){
-            this.tubeIndex= 0;
-            this.camHolder.position.x = this.camHolder.position.y = this.camHolder.position.z = 0;
-        }
-    }else{
-        dv.normalize();
-        this.camHolder.position.x += dv.x * speed * dt;
-        this.camHolder.position.y += dv.y * speed * dt;
-        this.camHolder.position.z += dv.z * speed * dt;
-    }
-
-    //this.camera.position.y++;
-
-    this.ambientCameraMovement(dt);
-    this.updatePathObjects(dt);
+	this.avatar.update(delta);
+	// TODO It would be nice to have some blending between focus transitions...
+	var shift = new THREE.Vector3(0, -100, 0);
+	this.camHolder.position.copy(this.avatar.holder.position);
+	this.camHolder.position.add( shift );
+	this.ambientCameraMovement(delta/1000);
 };
 
 GameController.prototype.ambientCameraMovement = function (dt) {

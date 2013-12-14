@@ -1,11 +1,15 @@
 function PathObject(p) {
-    GameObject.call(this, new THREE.CubeGeometry(10,10,10,1,1,1), 0xff0000, 0xff0000);
+    GameObject.call(this, {
+		geometry: new THREE.CubeGeometry(10,10,10,1,1,1),
+		color: 0xff0000,
+		wireColor: 0xff0000
+	});
     this.pos.x = p.x;
     this.pos.y = p.y;
     this.pos.z = p.z;
 }
 
-PathObject.prototype = new GameObject();
+PathObject.prototype = Object.create(GameObject.prototype);
 PathObject.prototype.constructor = PathObject;
 
 PathObject.prototype.update = function (dt) {
