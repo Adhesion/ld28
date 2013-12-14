@@ -225,17 +225,8 @@ GameState.prototype.onStart = function( game ) {
 		1,
 		10000
 	);
-	this.camera.position.y = -200;
-	this.camera.position.z = 200;
-	this.camera.lookAt(new THREE.Vector3());
-
-	this.goController = new GameController(game);
-	this.uiController = new UIController(game);
-
-	game.controllers.push(
-		this.goController,
-		this.uiController
-	);
+	//this.camera.position.y = -200;
+	//this.camera.position.z = 200;
 
     var materialArray = [];
     materialArray.push(new THREE.MeshBasicMaterial( { map: game.loader.get( "assets/skybox/right.png" ), fog:false }));
@@ -249,10 +240,23 @@ GameState.prototype.onStart = function( game ) {
         materialArray[i].side = THREE.BackSide;
     }
     var skyboxMaterial = new THREE.MeshFaceMaterial( materialArray );
-    var skyboxGeom = new THREE.CubeGeometry( 2000, 2000, 2000, 1, 1, 1 );
+    var skyboxGeom = new THREE.CubeGeometry( 10000, 10000, 10000, 1, 1, 1 );
     var skybox = new THREE.Mesh( skyboxGeom, skyboxMaterial );
 
-    this.scene.add( skybox );
+    //this.scene.add( skybox );
+
+
+	this.camera.lookAt(new THREE.Vector3());
+
+	this.goController = new GameController(game, skybox);
+	this.uiController = new UIController(game);
+
+	game.controllers.push(
+		this.goController,
+		this.uiController
+	);
+
+
 
 }
 
@@ -791,10 +795,9 @@ LoadingController.prototype.onStop = function() {
 LoadingController.prototype.update = function( dt ) {
     var assets = this.game.getAssets();
     if( this.game.loader.done( assets ) ) {
-
         //TODO: change this back to Intro for final build.
-        this.game.setState( new Intro() );
-        //this.game.setState( new GameState() );
+        //this.game.setState( new Intro() );
+        this.game.setState( new GameState() );
     }
 
     this.counter += dt;

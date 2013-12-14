@@ -1,17 +1,20 @@
-function GameController(main) {
+function GameController(main, skybox) {
 
     this.main = main;
+    this.skybox = skybox;
     this.input = new Input();
 
-    this.combo = 0;
+    this.tubeIndex = 0;
 
     this.camera = this.main.state.camera;
     this.camera.up = new THREE.Vector3( 0, 0, 1 );
     this.cameraTarget = new THREE.Vector3();
+    this.camera.position.y = -100;
 
     this.camHolder = new THREE.Object3D();
     this.camHolder.add(this.camera);
-    this.main.state.scene.add(this.camHolder);
+    this.camHolder.position.y = -200;
+    this.main.state.scene.add( this.camHolder );
     this.main.state.scene.add( new THREE.AmbientLight( 0x222222 ) );
 
     this.particles = [];
@@ -34,21 +37,43 @@ function GameController(main) {
     this.light4= new THREE.PointLight( 0xffffff, 1, 3000 );
     this.light4.position.set( 0, -1000, 0 );
 
-    this.main.state.scene.add( this.light1 );
-    this.main.state.scene.add( this.light2 );
-    this.main.state.scene.add( this.light3 );
-    this.main.state.scene.add( this.light4 );
+    this.camHolder.add( this.light1 );
+    this.camHolder.add( this.light2 );
+    this.camHolder.add( this.light3 );
+    this.camHolder.add( this.light4 );
+    this.camHolder.add( this.skybox );
+
+    this.tube = new Tube();
+    this.main.state.scene.add( this.tube.holder );
 
     window.game_win = false;
 }
 
 GameController.prototype.update = function (delta) {
-
     this.checkInput();
     var dt = delta/1000;
 
-    this.ambientCameraMovement(dt);
+    var speed = 300;
+    var dv = new THREE.Vector3(0,0,0);
+    dv = dv.subVectors( this.tube.path[this.tubeIndex], this.camHolder.position );
 
+    //console.log("" + dv.length() + " / " + (speed * dt * 2) );
+    if(dv.length() <= speed * dt ){
+        this.tubeIndex++;
+        if(this.tubeIndex >= this.tube.path.length){
+            this.tubeIndex= 0;
+            this.camHolder.position.x = this.camHolder.position.y = this.camHolder.position.z = 0;
+        }
+    }else{
+        dv.normalize();
+        this.camHolder.position.x += dv.x * speed * dt;
+        this.camHolder.position.y += dv.y * speed * dt;
+        this.camHolder.position.z += dv.z * speed * dt;
+    }
+
+    //this.camera.position.y++;
+
+    this.ambientCameraMovement(dt);
 };
 
 GameController.prototype.ambientCameraMovement = function (dt) {
@@ -61,19 +86,18 @@ GameController.prototype.ambientCameraMovement = function (dt) {
         x += Math.random() * this.shake * 4 - this.shake * 2;
         z += Math.random() * this.shake * 4 - this.shake * 2;
     }
-    this.camHolder.position.x = x;
-    this.camHolder.position.z = z;
+    this.camera.position.x = x;
+    this.camera.position.z = z;
     this.camera.lookAt(this.cameraTarget);
     this.shake -=dt;
 };
 
 GameController.prototype.checkInput = function () {
     // check if keys are released.
-    if (this.input.x == false) this.x = false;
+    if (this.input.w == false) this.up = false;
 
-    // only attack if key has been pressed this update.
-    if(this.input.x == true && this.x == false ){
-        this.x = true;
+    if(this.input.w == true && this.up == false ){
+        this.up = true;
     }
 };
 
