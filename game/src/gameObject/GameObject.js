@@ -43,7 +43,7 @@ GameObject.prototype.update = function (delta) {
     this.holder.position = this.pos;
 
     //this.solid.rotation = this.rotation;
-    this.wire.rotation = this.rotation;
+    //this.wire.rotation = this.rotation;
 };
 
 GameObject.prototype.dispose = function () {

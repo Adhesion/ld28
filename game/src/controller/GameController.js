@@ -87,12 +87,7 @@ GameController.prototype.cameraMovement = function (dt) {
 };
 
 GameController.prototype.checkInput = function () {
-    // check if keys are released.
-    if (this.input.w == false) this.up = false;
 
-    if(this.input.w == true && this.up == false ){
-        this.up = true;
-    }
 };
 
 GameController.prototype.gameOver = function () {

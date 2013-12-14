@@ -23,8 +23,8 @@ function Avatar(tube, input) {
 			geometry.vertices.push(
 				new THREE.Vector3(
 					Math.cos( segment ) * this.movementAmplitude,
-					0,
-					Math.sin( segment ) * this.movementAmplitude
+                    Math.sin( segment ) * this.movementAmplitude,
+					0
 				)
 			);
 		}
@@ -32,6 +32,7 @@ function Avatar(tube, input) {
 		this.holder.add( new THREE.Line( geometry, material ) )
 	}
 
+    this.wasdSpeed = 100;
 	this.speed = 800;
 	this.tube = tube;
 	this.pos.z -= 100;
@@ -40,8 +41,9 @@ function Avatar(tube, input) {
 	this.vel.y = 0;
 	this.tubeIndex = 1;
 	this.direction = new THREE.Vector3(0,0,0);
-	this.controlOffset = new THREE.Vector3();
+	this.controlVel = new THREE.Vector3();
 	this.focus = new THREE.Vector3();
+    this.holder.up = new THREE.Vector3(0,0,1);
 }
 
 Avatar.prototype = Object.create(GameObject.prototype);
@@ -52,24 +54,31 @@ Avatar.prototype.update = function (delta) {
 	var dt = delta/1000;
 
 	if( this.input.w || this.input.up ) {
-		this.controlOffset.z += this.movementAmplitude* dt;
+		this.controlVel.y += this.wasdSpeed * dt;
 	}
 	if( this.input.s || this.input.down ) {
-		this.controlOffset.z -= this.movementAmplitude * dt;
+		this.controlVel.y -= this.wasdSpeed  * dt;
 	}
 	if( this.input.d || this.input.right ) {
-		this.controlOffset.x += this.movementAmplitude * dt;
+		this.controlVel.x -= this.wasdSpeed  * dt;
 	}
 	if( this.input.a || this.input.left ) {
-		this.controlOffset.x -= this.movementAmplitude * dt;
+		this.controlVel.x += this.wasdSpeed  * dt;
 	}
 
-	var cl = this.controlOffset.length();
-	if( cl > this.movementAmplitude) {
-		this.controlOffset.normalize().multiplyScalar(this.movementAmplitude);
+	if( this.controlVel.length() > this.wasdSpeed) {
+		this.controlVel.normalize().multiplyScalar(this.wasdSpeed);
 	}
 
-	this.wire.position.copy( this.controlOffset );
+    this.wire.position.add( this.controlVel );
+
+    if( this.wire.position.length() > this.movementAmplitude) {
+        this.wire.position.normalize().multiplyScalar(this.movementAmplitude);
+    }
+
+
+    //apply friction to controlVel.
+    this.controlVel.multiplyScalar(0.5);
 
 	if(this.pos.y > this.focus.y ){
 		this.tubeIndex++;
@@ -80,15 +89,21 @@ Avatar.prototype.update = function (delta) {
 	}
 
 	this.focus.copy( this.tube.path[this.tubeIndex] );
-	this.focus.add( this.controlOffset );
 	this.direction.subVectors( this.focus, this.pos )
-		.multiplyScalar( this.speed * dt * 2 );
-	this.vel.add( this.direction );
+		.multiplyScalar( this.speed * dt * 0.01 );
+
+    this.vel.add( this.direction );
+    this.vel.add( this.controlVel );
 
 	if(this.vel.length() > this.speed){
 		this.vel.normalize();
 		this.vel.multiplyScalar(this.speed);
 	}
+
+
+    var lookAt = new THREE.Vector3().copy(this.pos).add(this.vel);
+
+    this.holder.lookAt(lookAt);
 };
 
 Avatar.prototype.buildMesh = function () {

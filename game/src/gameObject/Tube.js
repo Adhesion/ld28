@@ -28,7 +28,7 @@ Tube.prototype.makeObjects = function () {
     });
 
     for( var i=0; i<this.path.length; i++ ){
-       if(Math.random() > 0.8){
+       if(Math.random() > 0.6){
            var h = 30 + Math.random() * 30;
            var obj = new THREE.Mesh( new THREE.CubeGeometry(500,50,h,1,1,1) , mat);
            obj.position.x = this.path[i].x + Math.random()* 200 - 100;
