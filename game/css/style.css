@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background-color: #000000;
+    overflow: hidden;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    height: 100%;
+}
+
+.score {
+    float: left;
+    font-size: 40px;
+    padding: 10px;
+}
+
+.info {
+    float: right;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.game {
+    position: absolute;
+}
