@@ -1,4 +1,4 @@
-function Avatar(tube, input) {
+function Avatar(tube, input, pathObjects ) {
 	GameObject.call(this, {
 		geometry: this.buildMesh(),
 		color: 0xf2e85c,
@@ -8,28 +8,12 @@ function Avatar(tube, input) {
 
 	this.input = input;
 	this.movementAmplitude = 75;
+	this.pathObjects = pathObjects;
 
 	// TODO Maybe have a debug mode toggle come in here?
 	if( true ) {
-		var geometry = new THREE.Geometry();
-		var material = new THREE.LineBasicMaterial({
-			color: 0xFFFFFF,
-			opacity: 1.0
-		});
-		var resolution = 100;
-		var size = 360 / resolution;
-		for(var i = 0; i <= resolution; i++) {
-			var segment = ( i * size ) * Math.PI / 180;
-			geometry.vertices.push(
-				new THREE.Vector3(
-					Math.cos( segment ) * this.movementAmplitude,
-					0,
-					Math.sin( segment ) * this.movementAmplitude
-				)
-			);
-		}
-
-		this.holder.add( new THREE.Line( geometry, material ) )
+		this.wire.add( circle( 0x0fffff, 25 ) )
+		this.holder.add( circle( 0xffffff, this.movementAmplitude ) )
 	}
 
 	this.speed = 800;
@@ -42,14 +26,66 @@ function Avatar(tube, input) {
 	this.direction = new THREE.Vector3(0,0,0);
 	this.controlOffset = new THREE.Vector3();
 	this.focus = new THREE.Vector3();
+	this.worldPosition = new THREE.Vector3();
+	this.following = [];
+}
+
+function circle( color, amplitude ) {
+	var geometry = new THREE.Geometry();
+	var material = new THREE.LineBasicMaterial({
+		color: color,
+		opacity: 1.0
+	});
+	var resolution = 100;
+	var size = 360 / resolution;
+	for(var i = 0; i <= resolution; i++) {
+		var segment = ( i * size ) * Math.PI / 180;
+		geometry.vertices.push(
+			new THREE.Vector3(
+				Math.cos( segment ) * amplitude,
+				0,
+				Math.sin( segment ) * amplitude
+			)
+		);
+	}
+	return new THREE.Line( geometry, material );
 }
 
 Avatar.prototype = Object.create(GameObject.prototype);
 Avatar.prototype.constructor = Avatar;
 
+Avatar.prototype.checkPathObjects = function(delta) {
+	var self = this;
+
+	// Update the known followers
+	this.following.forEach(function(e) {
+		e.update(delta);
+	});
+
+	// Find any new followers and remove them from the global list.
+	var remove = [];
+	this.pathObjects.forEach(function(e) {
+		var dist = e.holder.position.distanceTo( self.worldPosition );
+		if( dist < 25 ) {
+			// move the path object to this avatar
+			self.following.push( e );
+			remove.push( e );
+			e.activate(self);
+		}
+	});
+
+	for( var i=0; i<remove.length; i++){
+		this.pathObjects.splice( this.pathObjects.indexOf(remove[i]), 1);
+	}
+}
+
 Avatar.prototype.update = function (delta) {
 	GameObject.prototype.update.call(this, delta);
 	var dt = delta/1000;
+
+	this.worldPosition.copy(this.holder.position).add(this.wire.position);
+
+	this.checkPathObjects(delta);
 
 	if( this.input.w || this.input.up ) {
 		this.controlOffset.z += this.movementAmplitude* dt;
