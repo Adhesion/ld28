@@ -47,19 +47,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="0" selection-start="2667" selection-end="2667" vertical-scroll-proportion="-9.4">
+            <state line="9" column="34" selection-start="292" selection-end="292" vertical-scroll-proportion="0.18433735">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Avatar.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Avatar.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="78" selection-start="1996" selection-end="1996" vertical-scroll-proportion="0.30722892">
+            <state line="116" column="18" selection-start="2922" selection-end="2922" vertical-scroll-proportion="-8.04">
               <folding />
             </state>
           </provider>
@@ -325,13 +325,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameObject/PathObject.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="56" selection-start="65" selection-end="103" vertical-scroll-proportion="0.03976608">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="50" selection-start="199" selection-end="199" vertical-scroll-proportion="-2.6153846">
@@ -353,16 +346,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
+    <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="0" selection-start="2667" selection-end="2667" vertical-scroll-proportion="-9.4">
+        <state line="116" column="18" selection-start="2922" selection-end="2922" vertical-scroll-proportion="-8.04">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
+    <entry file="file://$PROJECT_DIR$/src/gameObject/PathObject.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="78" selection-start="1996" selection-end="1996" vertical-scroll-proportion="0.30722892">
+        <state line="11" column="22" selection-start="261" selection-end="261" vertical-scroll-proportion="0.21871345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="34" selection-start="292" selection-end="292" vertical-scroll-proportion="0.18433735">
           <folding />
         </state>
       </provider>

@@ -15,14 +15,25 @@ function PathObject(p) {
 PathObject.prototype = Object.create(GameObject.prototype);
 PathObject.prototype.constructor = PathObject;
 
+PathObject.prototype.activate = function(target) {
+	this.target = target;
+}
+
 PathObject.prototype.update = function (delta) {
     GameObject.prototype.update.call(this, delta);
     var dt = delta/1000;
-    this.life -= dt;
-    if(this.life < 0 && this.alive){
-        //console.log(this.life);
-        this.alive = false;
-    }
+	if( this.target == null ) {
+		this.life -= dt;
+		if(this.life < 0 && this.alive){
+			//console.log(this.life);
+			this.alive = false;
+		}
+	}
+	else {
+		this.vel.subVectors( this.target.worldPosition, this.holder.position )
+			.normalize()
+			.multiplyScalar( this.target.speed - 50);
+	}
 
    this.rotation.x += dt;
    this.rotation.y += dt;
