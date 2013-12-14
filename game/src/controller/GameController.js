@@ -18,7 +18,7 @@ function GameController(main, skybox) {
     this.main.state.scene.add( new THREE.AmbientLight( 0x222222 ) );
 
     this.particles = [];
-    this.baddies = [];
+    this.pathObjects = [];
 
     this.nextChain = null;
     this.chain = [];
@@ -47,6 +47,8 @@ function GameController(main, skybox) {
     this.main.state.scene.add( this.tube.holder );
 
     window.game_win = false;
+
+    this.makePathObjects();
 }
 
 GameController.prototype.update = function (delta) {
@@ -74,6 +76,7 @@ GameController.prototype.update = function (delta) {
     //this.camera.position.y++;
 
     this.ambientCameraMovement(dt);
+    this.updatePathObjects(dt);
 };
 
 GameController.prototype.ambientCameraMovement = function (dt) {
@@ -105,4 +108,19 @@ GameController.prototype.gameOver = function () {
     this.main.operations.push(function(game) {
         game.setState( new GameOver() );
     });
+};
+
+GameController.prototype.makePathObjects = function () {
+    for( var i=0; i<10; i++){
+        var pathObject = new PathObject( this.tube.path[i].clone() );
+        this.main.state.scene.add( pathObject.holder );
+        this.pathObjects.push(pathObject);
+    }
+};
+
+
+GameController.prototype.updatePathObjects = function (dt) {
+    for( var i=0; i<this.pathObjects.length; i++){
+        this.pathObjects[i].update(dt);
+    }
 };

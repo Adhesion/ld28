@@ -19,9 +19,7 @@ function GameObject(geometry, color, wireColor) {
     this.holder = new THREE.Object3D();
     this.holder.add(this.wire);
     //this.holder.add(this.solid);
-
-
-
+    this.timeMult = 1;
     this.alive = true;
 }
 

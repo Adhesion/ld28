@@ -61,7 +61,6 @@ Tube.prototype.buildMesh = function () {
             var m = new THREE.Matrix4();
             m.makeRotationZ( Math.atan2(b.y - a.y,b.x - a.x) - Math.PI * 0.5);
             m.makeRotationX( Math.atan2(b.y - a.y,b.z - a.z) - Math.PI * 0.5);
-
             m.makeRotationY( Math.random() * Math.PI * 0.25 );
 
             v0.applyMatrix4(m);
