@@ -3,8 +3,8 @@ function Tube() {
     this.pos.y = -70;
 }
 
-Avatar.prototype = new GameObject();
-Avatar.prototype.constructor = Tube;
+Tube.prototype = new GameObject();
+Tube.prototype.constructor = Tube;
 
 Tube.prototype.update = function (dt) {
     GameObject.prototype.update.call(this, dt);
