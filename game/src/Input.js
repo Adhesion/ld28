@@ -33,15 +33,12 @@ Input.prototype.checkKeys = function (keycode, val) {
     if (keycode == 39) this.right = val;
     if (keycode == 38) this.up = val;
     if (keycode == 40) this.down = val;
-
-    if(keycode == 87) this.w = val;
-
+    if (keycode == 87) this.w = val;
     if (keycode == 65) this.a = val;
     if (keycode == 83) this.s = val;
     if (keycode == 68) this.d = val;
     if (keycode == 70) this.f = val;
     if (keycode == 71) this.g = val;
-
     if (keycode == 90) this.z = val;
     if (keycode == 88) this.x = val;
     if (keycode == 67) this.c = val;

@@ -33,7 +33,7 @@ function GameController(main, skybox) {
 
     this.tube = new Tube();
     this.main.state.scene.add( this.tube.holder );
-	this.avatar = new Avatar( this.tube );
+	this.avatar = new Avatar( this.tube, this.input );
 	this.main.state.scene.add( this.avatar.holder );
 
     window.game_win = false;
