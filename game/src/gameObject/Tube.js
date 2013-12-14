@@ -6,6 +6,10 @@ function Tube() {
 		doubleSided: false
 	});
 	this.pos.y = -70;
+
+    this.objects = [];
+    this.makeObjects();
+
 }
 
 Tube.prototype = Object.create(GameObject.prototype);
@@ -15,6 +19,30 @@ Tube.prototype.update = function (dt) {
     GameObject.prototype.update.call(this, dt);
 };
 
+Tube.prototype.makeObjects = function () {
+
+    var mat = new THREE.MeshBasicMaterial({
+        color:0xf2e85c,
+        wireframe:false,
+        shading: THREE.FlatShading
+    });
+
+    for( var i=0; i<this.path.length; i++ ){
+       if(Math.random() > 0.8){
+           var h = 30 + Math.random() * 30;
+           var obj = new THREE.Mesh( new THREE.CubeGeometry(500,50,h,1,1,1) , mat);
+           obj.position.x = this.path[i].x + Math.random()* 200 - 100;
+           obj.position.y = this.path[i].y;
+           obj.position.z = this.path[i].z + Math.random()* 200 - 100;
+           obj.rotation.y = Math.random() * Math.PI * 2;
+           this.holder.add(obj);
+           this.objects.push(obj);
+       }
+    }
+
+
+}
+
 Tube.prototype.makePath = function () {
     var path = [];
 
@@ -22,15 +50,18 @@ Tube.prototype.makePath = function () {
     var y = 0;
     var z = 0;
 
-    var d = 300;
+    var d = 400;
     var v = new THREE.Vector3( 0, d ,0 );
 
     for( var i=0; i< 1000; i++){
+
         path.push( new THREE.Vector3( x, y, z ) );
 
-        if(Math.random() > 0.75){
+        if(Math.random() > 0.9){
             //turn.
+            if(Math.random() > 0.5) d = 200 + Math.round( Math.random() * 3 ) * 100;
             v.x = Math.random() * d - d*0.5;
+            v.y = d;
             v.z = Math.random() * d - d*0.5;
         }
 
