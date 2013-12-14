@@ -42,7 +42,6 @@ Tube.prototype.buildMesh = function () {
 
     this.path = this.makePath();
 
-
     var v = 0;
 
     for( var i=0; i<this.path.length; i++ ){
