@@ -5,13 +5,13 @@ function Avatar(tube) {
 		wireColor: 0xff0000,
 		doubleSided: true
 	});
-	this.speed = 500;
+	this.speed = 800;
 	this.tube = tube;
 	this.pos.z -= 100;
 	this.vel.x = 0;
 	this.vel.z = 0;
-	this.vel.y = this.speed/10000;
-	this.tubeIndex = 0;
+	this.vel.y = 0;
+	this.tubeIndex = 1;
 	this.direction = new THREE.Vector3(0,0,0);
 }
 
@@ -22,24 +22,28 @@ Avatar.prototype.update = function (delta) {
 	GameObject.prototype.update.call(this, delta);
 	var dt = delta/1000;
 
-	this.focus = this.tube.path[this.tubeIndex],
-	this.direction.subVectors(
-		this.focus,
-		this.holder.position
-	);
+	this.focus = this.tube.path[this.tubeIndex];
+    this.direction.subVectors( this.focus, this.pos );
 
-	if(this.direction.length() <= this.speed * dt ){
-		this.tubeIndex++;
+	//if(this.direction.length() <= this.speed * dt ){
+    if(this.pos.y > this.focus.y ){
+        this.tubeIndex++;
 		if(this.tubeIndex >= this.tube.path.length){
 			this.tubeIndex= 0;
 			this.pos.x = this.pos.y = this.pos.z = 0;
 		}
 	}
 
-	this.direction.normalize();
-	this.pos.x += this.direction.x * this.speed * dt;
-	this.pos.y += this.direction.y * this.speed * dt;
-	this.pos.z += this.direction.z * this.speed * dt;
+	//this.direction.normalize();
+	this.direction.multiplyScalar( 2 * dt);
+    this.vel.x += this.direction.x * this.speed * dt;
+	this.vel.y += this.direction.y * this.speed * dt;
+	this.vel.z += this.direction.z * this.speed * dt;
+
+    if(this.vel.length() > this.speed){
+        this.vel.normalize();
+        this.vel.multiplyScalar(this.speed);
+    }
 };
 
 Avatar.prototype.buildMesh = function () {

@@ -23,7 +23,8 @@ PathObject.prototype.update = function (delta) {
         //console.log(this.life);
         this.alive = false;
     }
-   // this.rotation.x += dt;
-    //this.rotation.y += dt;
-    //this.rotation.z += dt;
+
+   this.rotation.x += dt;
+   this.rotation.y += dt;
+   this.rotation.z += dt;
 };
