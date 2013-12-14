@@ -81,7 +81,10 @@ GameController.prototype.cameraMovement = function (dt) {
         this.camera.position.add(toAvatar);
     }
 
-    //this.cameraTarget.copy( this.avatar.pos );
+    //var lookAt = new THREE.Vector3().copy(this.avatar.pos);
+    //lookAt.x += this.avatar.wire.position.x * 0.2;
+    //lookAt.z -= this.avatar.wire.position.y * 0.2;
+
     this.camera.lookAt( this.avatar.pos );
 
 };
