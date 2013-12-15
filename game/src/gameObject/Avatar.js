@@ -6,7 +6,7 @@ function Avatar(tube, input, pathObjects) {
 		doubleSided: true
 	});
 
-
+	this.wire.rotateOnAxis( new THREE.Vector3( 1, 1, 0), Math.PI / 2);
 	this.wire.scale.set( 10, 10, 10);
 	this.pathObjects = pathObjects;
 	this.input = input;
