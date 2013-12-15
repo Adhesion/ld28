@@ -170,7 +170,7 @@ Avatar.prototype.checkWorldCollision = function () {
         direction = new THREE.Vector3().copy(this.vel),
         ray = new THREE.Raycaster(origin, direction);
 
-    ray.near = 0.01;
+    ray.near = 1;
     ray.far = 1000;
     var collisionResults = ray.intersectObjects(this.tube.objects);
     if(collisionResults.length!==0){

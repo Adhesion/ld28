@@ -54,7 +54,7 @@ Tube.prototype.makeObjects = function () {
 
         if( i >= this.path.length -  this.lastRoom){
 
-
+            x=z=0;
         }else{
             if(Math.random() > 0.6){
 
@@ -133,7 +133,6 @@ Tube.prototype.buildMesh = function () {
             var roomi = i+ this.lastRoom - this.path.length;
             //boss area, make it really big!
             w = 150 + Math.sin(Math.PI * (roomi/( this.lastRoom-1))) * 4000;
-            console.log(w);
         }
         if( i == this.path.length-1) w = 0;
 
