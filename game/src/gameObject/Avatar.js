@@ -123,6 +123,26 @@ Avatar.prototype.update = function (delta) {
 		this.controlVel.x += this.wasdSpeed  * dt;
 	}
 
+    // TODO temp shit, remove this
+    if( this.input.z ) {
+        window.main.fadeToSong("ld28-intro");
+    }
+    if( this.input.x ) {
+        window.main.fadeToSong("ld28-game");
+    }
+    if( this.input.c ) {
+        window.main.fadeToSong("ld28-open");
+    }
+    if( this.input.v ) {
+        window.main.fadeToSong("ld28-boss");
+    }
+    if( this.input.b ) {
+        window.main.loader.get("sound/bossdeath").play();
+    }
+    if( this.input.n ) {
+        window.main.loader.get("sound/death").play();
+    }
+
 	if( this.controlVel.length() > this.wasdSpeed) {
 		this.controlVel.normalize().multiplyScalar(this.wasdSpeed);
 	}

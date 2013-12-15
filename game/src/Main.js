@@ -119,28 +119,46 @@ function Main() {
 }
 
 Main.prototype.getAssets = function() {
-	var hitAsset = function( base, prefix, vol ) {
+	var getSound = function( base, prefix, vol ) {
 		return {
-			name: "sound/" + (prefix || "") + "hit" + base,
+			name: "sound/" + (prefix || "") + base,
 			volume: vol || 0.27,
 			urls: [
-				"sound/" + (prefix || "") + "hit" + base + ".mp3",
-				"sound/" + (prefix || "") + "hit" + base + ".ogg"
+				"sound/" + (prefix || "") + base + ".m4a",
+				"sound/" + (prefix || "") + base + ".ogg"
 			],
 			type: 'audio',
+            buffer: false,
 			callback: function( audio ) {
-				if( !prefix ) {
-					window.hitSounds = window.hitSounds || [];
-					window.hitSounds[base] = audio;
-				}
+				//if( !prefix ) {
+				//	window.hitSounds = window.hitSounds || [];
+				//	window.hitSounds[base] = audio;
+				//}
+                audio.origVolume= vol;
 			}
 		};
 	};
 
 	return [
-		{ name: "sound/radmarslogo", urls: ['sound/radmarslogo.mp3', 'sound/radmarslogo.ogg'], type: 'audio', volume: 0.9, buffer: true },
+        getSound( "radmarslogo", "", 0.9 ),
+        getSound( "ld28-open", "", 0.5 ),
+        getSound( "ld28-game", "", 0.6 ),
+        getSound( "ld28-intro", "", 0.6 ),
+        getSound( "ld28-boss", "", 0.5 ),
+        getSound( "bossdeath", "", 0.7 ),
+        getSound( "death", "", 0.6 ),
+        getSound( "1", "hit", 0.9 ),
+        getSound( "2", "hit", 0.9 ),
+        getSound( "3", "hit", 0.9 ),
+        getSound( "4", "hit", 0.9 ),
+        getSound( "5", "hit", 0.9 ),
+        getSound( "1", "pickup", 0.9 ),
+        getSound( "2", "pickup", 0.9 ),
+        getSound( "3", "pickup", 0.9 ),
+        getSound( "4", "pickup", 0.9 ),
+        getSound( "5", "pickup", 0.9 ),
 
-		{ name: 'assets/text/hitEnter.png', type: 'img', },
+        { name: 'assets/text/hitEnter.png', type: 'img', },
 		{ name: 'assets/intro/intro_bg.png', type: 'img', },
 		{ name: 'assets/intro/intro_glasses1.png', type: 'img' },
 		{ name: 'assets/intro/intro_glasses2.png', type: 'img' },
@@ -205,6 +223,27 @@ Main.prototype.update = function (newFrame) {
 
 	// and then request another frame draw
 	requestAnimFrame( this.callback );
+};
+
+Main.prototype.fadeToSong = function(toSong) {
+    // If first time, just play the given song
+    if( !this.currentSong ) {
+        this.loader.get("sound/" + toSong).play().loop(true);
+        this.currentSong= toSong;
+        return;
+    }
+    // Don't bother to fade with same song
+    else if( this.currentSong === toSong )
+        return;
+
+    // Fade out current song, stop on end of fade
+    // Fade in next song at old song pos
+    var curSong= this.loader.get("sound/" + this.currentSong);
+    var nextSong= this.loader.get("sound/" + toSong);
+    curSong.fade( curSong.origVolume, 0.0, 100, function() { curSong.stop(); } );
+    nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
+    nextSong.pos( curSong.pos() );
+    this.currentSong= toSong;
 };
 
 function GameState() {
