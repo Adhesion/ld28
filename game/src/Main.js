@@ -360,7 +360,7 @@ Intro.prototype.onStart = function( game ) {
 	);
 	this.controller = new IntroController( game, this.camera, this.scene );
 	game.controllers.push( this.controller );
-	//game.loader.get("sound/radmarslogo").play();
+	game.loader.get("sound/radmarslogo").play();
 
     this.game.renderer.setClearColor( 0x000000, 1 );
 };
@@ -813,8 +813,8 @@ function LoadingController( game, camera, scene ) {
             size: 20, height: 4, curveSegments: 4,
             font: "helvetiker", style: "normal"
         });
-
-    this.scoreMesh = new THREE.Mesh(textGeom, tmat );
+    //textGeom
+    this.scoreMesh = new THREE.Mesh(new THREE.CubeGeometry(100,100,100,1,1,1), tmat );
     textGeom.computeBoundingBox();
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
     this.scoreMesh.position.set( -0.5 * textWidth, -40, 120 );
@@ -861,8 +861,8 @@ LoadingController.prototype.update = function( dt ) {
     var assets = this.game.getAssets();
     if( this.game.loader.done( assets ) ) {
         //TODO: change this back to Intro for final build.
-        //this.game.setState( new Intro() );
-        this.game.setState( new GameState() );
+        this.game.setState( new Intro() );
+        //this.game.setState( new GameState() );
     }
 
     this.counter += dt;
