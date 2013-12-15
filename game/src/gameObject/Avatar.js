@@ -143,6 +143,7 @@ Avatar.prototype.update = function (delta) {
 
 	if(this.pos.y > this.focus.y ){
 		this.tubeIndex++;
+		window.main.state.uiController.addScore(1* this.following.length);
 		if(this.tubeIndex >= this.tube.path.length){
 			//this.tubeIndex= 0;
 			//this.pos.x = this.pos.y = this.pos.z = 0;
