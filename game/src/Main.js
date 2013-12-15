@@ -158,7 +158,9 @@ Main.prototype.getAssets = function() {
         { name: 'assets/skybox/top.png', type: 'img' },
 
         { name: 'assets/models/tessitron_logo.js', type: 'model' },
-        { name: 'assets/models/tessitron_text.js', type: 'model' }
+        { name: 'assets/models/tessitron_text.js', type: 'model' },
+
+        { name: 'assets/models/player.js', type: 'model' },
 	];
 };
 

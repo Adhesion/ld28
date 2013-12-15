@@ -6,6 +6,8 @@ function Avatar(tube, input, pathObjects) {
 		doubleSided: true
 	});
 
+
+	this.wire.scale.set( 10, 10, 10);
 	this.pathObjects = pathObjects;
 	this.input = input;
 	this.movementAmplitude = 75;
@@ -186,41 +188,7 @@ Avatar.prototype.checkWorldCollision = function () {
 }
 
 Avatar.prototype.buildMesh = function () {
-    var geometry = new THREE.Geometry();
-    var w = 5;
-    var h = 10;
-    var d = 3;
+	var logo = window.main.loader.get("assets/models/player.js");
 
-    // right side
-    geometry.vertices.push(new THREE.Vector3(w, -h * 0.25, -d));
-    geometry.vertices.push(new THREE.Vector3(0, h, 0));
-    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-    // left side
-    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-    geometry.vertices.push(new THREE.Vector3(0, h, 0));
-    geometry.vertices.push(new THREE.Vector3(-w, -h * 0.25, -d));
-
-	// left side
-    geometry.vertices.push(new THREE.Vector3(w, -h * .25, 0));
-    geometry.vertices.push(new THREE.Vector3(0, h, 0));
-    geometry.vertices.push(new THREE.Vector3(-w, -h * 0.25, d));
-
-
-    geometry.faces.push(
-		new THREE.Face3(0, 1, 2,
-			new THREE.Vector3( 0, 0, 1 )
-		),
-		new THREE.Face3(3, 4, 5,
-			new THREE.Vector3( 0, 0, 1 )
-		),
-		new THREE.Face3(6, 7, 8,
-			new THREE.Vector3( 0, 0, 1 )
-		)
-
-	);
-
-    geometry.computeBoundingSphere();
-
-
-    return geometry;
+	return logo;
 };
