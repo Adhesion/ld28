@@ -137,8 +137,10 @@ Avatar.prototype.update = function (delta) {
 	if(this.pos.y > this.focus.y ){
 		this.tubeIndex++;
 		if(this.tubeIndex >= this.tube.path.length){
-			this.tubeIndex= 0;
-			this.pos.x = this.pos.y = this.pos.z = 0;
+			//this.tubeIndex= 0;
+			//this.pos.x = this.pos.y = this.pos.z = 0;
+            this.tubeIndex = this.tube.path.length-1;
+            this.alive = false;
 		}
 	}
 

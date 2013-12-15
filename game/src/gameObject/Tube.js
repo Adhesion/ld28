@@ -8,6 +8,8 @@ function Tube() {
 	});
 */
 
+    this.lastRoom = 20;
+
     var materials = [
         new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors, transparent: true } ),
         new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
@@ -23,6 +25,7 @@ function Tube() {
     this.holder.add(this.wire);
     this.timeMult = 1;
     this.alive = true;
+
 
 
     var pathGeo = new THREE.Geometry();
@@ -47,30 +50,33 @@ Tube.prototype.update = function (dt) {
 
 Tube.prototype.makeObjects = function () {
 
-
-
     for( var i=0; i<this.path.length; i++ ){
-       if(Math.random() > 0.6){
 
-           var progress = i/this.path.length;
-           var c = new THREE.Color( 0xf2e85c );
-           c.setHSL((1-progress)*0.2 + 0.0,1,0.4);
-           var materials = [
-               new THREE.MeshBasicMaterial({ color:c.getHex(), wireframe:false, shading: THREE.FlatShading }),
-               new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
-           ];
+        if( i >= this.path.length -  this.lastRoom){
 
-           var h = 40 + Math.random() * 40;
-           var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,60,h,1,1,1), materials );
-           obj.position.x = this.path[i].x + Math.random()* 200 - 100;
-           obj.position.y = this.path[i].y;
-           obj.position.z = this.path[i].z + Math.random()* 200 - 100;
-           obj.rotation.y = Math.random() * Math.PI * 2;
-           this.holder.add(obj);
-           this.objects.push(obj);
-       }
+
+        }else{
+            if(Math.random() > 0.6){
+
+                var progress = i/this.path.length;
+                var c = new THREE.Color( 0xf2e85c );
+                c.setHSL((1-progress)*0.2 + 0.0,1,0.4);
+                var materials = [
+                    new THREE.MeshBasicMaterial({ color:c.getHex(), wireframe:false, shading: THREE.FlatShading }),
+                    new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+                ];
+
+                var h = 40 + Math.random() * 40;
+                var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,60,h,1,1,1), materials );
+                obj.position.x = this.path[i].x + Math.random()* 200 - 100;
+                obj.position.y = this.path[i].y;
+                obj.position.z = this.path[i].z + Math.random()* 200 - 100;
+                obj.rotation.y = Math.random() * Math.PI * 2;
+                this.holder.add(obj);
+                this.objects.push(obj);
+            }
+        }
     }
-
 
 }
 
@@ -85,16 +91,21 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    for( var i=0; i< 200; i++){
+    var segments = 10 + this.lastRoom;
+
+    for( var i=0; i< segments; i++){
 
         path.push( new THREE.Vector3( x, y, z ) );
 
-        if(Math.random() > 0.9){
-            //turn.
-            if(Math.random() > 0.5) d = 200 + Math.round( Math.random() * 3 ) * 100;
-            v.x = Math.random() * d - d*0.5;
-            v.y = d;
-            v.z = Math.random() * d - d*0.5;
+        if( i < segments -  this.lastRoom){
+            //dont try to turn!
+            if(Math.random() > 0.9){
+                //turn.
+                if(Math.random() > 0.5) d = 200 + Math.round( Math.random() * 3 ) * 100;
+                v.x = Math.random() * d - d*0.5;
+                v.y = d;
+                v.z = Math.random() * d - d*0.5;
+            }
         }
 
         x += v.x;
@@ -117,6 +128,15 @@ Tube.prototype.buildMesh = function () {
     for( var i=0; i<this.path.length; i++ ){
 
         var w = 150 + Math.random() * 50;
+
+        if( i >= this.path.length -  this.lastRoom){
+            var roomi = i+ this.lastRoom - this.path.length;
+            //boss area, make it really big!
+            w = 150 + Math.sin(Math.PI * (roomi/( this.lastRoom-1))) * 4000;
+            console.log(w);
+        }
+        if( i == this.path.length-1) w = 0;
+
         var v0 = new THREE.Vector3( -w, 0, -w);
         var v1 = new THREE.Vector3( w, 0, -w);
         var v2 = new THREE.Vector3( -w, 0, w);

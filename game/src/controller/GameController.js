@@ -25,7 +25,7 @@ function GameController(main, skybox) {
     this.sway = 0;
     this.shake = 0;
 
-    this.light1= new THREE.PointLight( 0xffffff, 1, 3000 );
+    this.light1= new THREE.PointLight( 0xdbd14c, 1, 3000 );
     this.light1.position.set( 0, 0, 0 );
     this.main.state.scene.add( this.light1 );
 
@@ -49,6 +49,20 @@ GameController.prototype.update = function (delta) {
     this.avatar.update(delta);
     this.cameraMovement(delta/1000);
     this.updatePathObjects(delta);
+
+    if(this.avatar.tubeIndex > this.tube.path.length - this.tube.lastRoom){
+        //in last room
+        this.main.state.scene.fog.far += delta * 5;
+        this.light1.distance += delta * 4;
+
+        if(this.main.state.scene.fog.far > 12000) this.main.state.scene.fog.far = 12000;
+        if(this.light1.distance > 10000) this.light1.distance = 10000;
+
+    }else{
+        this.main.state.scene.fog.far = 2000;
+        this.light1.distance = 1000;
+    }
+
 
     if(!this.avatar.alive){
         this.gameOver();
