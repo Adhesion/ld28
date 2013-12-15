@@ -69,8 +69,11 @@ PathObject.prototype.buildMesh = function () {
 		"brick",
 		"bomb"
 	];
-	var i = Math.floor((Math.random())* (ps.length));
+    // Small hack to map to 5 sounds
+    var j = Math.floor(Math.random()* 5);
+	var i = j % ps.length;
 	this[ps[i]] = true
+    this.soundType= j + 1; // 0-4 -> 1-5
 	return window.main.loader.get("assets/models/" + ps[i] + ".js");
 }
 

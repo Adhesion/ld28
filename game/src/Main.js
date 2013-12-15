@@ -242,7 +242,7 @@ Main.prototype.fadeToSong = function(toSong) {
     var nextSong= this.loader.get("sound/" + toSong);
     curSong.fade( curSong.origVolume, 0.0, 100, function() { curSong.stop(); } );
     nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
-    nextSong.pos( curSong.pos() );
+    nextSong.pos( curSong.pos() % nextSong._duration );
     this.currentSong= toSong;
 };
 

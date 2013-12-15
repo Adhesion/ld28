@@ -85,6 +85,9 @@ Avatar.prototype.checkPathObjects = function(delta) {
 			e.wireMat.transparent = true;
 			e.wireMat.opacity = .8;
 			self.speed += 20;
+
+            // pickup sound
+            window.main.loader.get("sound/pickup" + e.soundType).play();
 		}
 	});
 
