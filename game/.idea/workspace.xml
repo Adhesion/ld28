@@ -32,7 +32,7 @@
       <file leaf-file-name="Tube.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="22" selection-start="938" selection-end="938" vertical-scroll-proportion="0.5855107">
+            <state line="59" column="61" selection-start="1839" selection-end="1839" vertical-scroll-proportion="0.5961995">
               <folding />
             </state>
           </provider>
@@ -380,7 +380,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="22" selection-start="938" selection-end="938" vertical-scroll-proportion="0.5855107">
+        <state line="59" column="61" selection-start="1839" selection-end="1839" vertical-scroll-proportion="0.5961995">
           <folding />
         </state>
       </provider>

@@ -47,13 +47,19 @@ Tube.prototype.update = function (dt) {
 
 Tube.prototype.makeObjects = function () {
 
-    var materials = [
-        new THREE.MeshBasicMaterial({ color:0xf2e85c, wireframe:false, shading: THREE.FlatShading }),
-        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
-    ];
+
 
     for( var i=0; i<this.path.length; i++ ){
        if(Math.random() > 0.6){
+
+           var progress = i/this.path.length;
+           var c = new THREE.Color( 0xf2e85c );
+           c.setHSL((1-progress)*0.2 + 0.0,1,0.4);
+           var materials = [
+               new THREE.MeshBasicMaterial({ color:c.getHex(), wireframe:false, shading: THREE.FlatShading }),
+               new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+           ];
+
            var h = 40 + Math.random() * 40;
            var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,60,h,1,1,1), materials );
            obj.position.x = this.path[i].x + Math.random()* 200 - 100;
@@ -141,10 +147,10 @@ Tube.prototype.buildMesh = function () {
             // make triangles.
             v = geometry.vertices.length - 8;
 
-            var progress = this.path[i].y / this.tubeLength.length();
+            var progress = i/this.path.length;
+            var c = new THREE.Color( 0xf2e85c );
+            c.setHSL((1-progress)*0.2 + 0.0,1,0.3);
 
-            var c = new THREE.Color( 0xffffff );
-            //c.setHSL(1, 1, 1 );
 
             //bottom
             geometry.faces.push( new THREE.Face3(v+0, v+5, v+4, new THREE.Vector3( 0, 0, 1 ), c) );
