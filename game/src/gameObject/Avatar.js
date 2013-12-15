@@ -96,7 +96,6 @@ Avatar.prototype.update = function (delta) {
 	// deal.
     if(!this.alive)return;
 
-	GameObject.prototype.update.call(this, delta);
 	var dt = delta/1000;
 
 	this.worldPosition.copy(this.holder.position);
@@ -162,6 +161,7 @@ Avatar.prototype.update = function (delta) {
     this.holder.lookAt(lookAt);
 
     this.checkWorldCollision();
+	GameObject.prototype.update.call(this, delta);
 };
 
 Avatar.prototype.checkWorldCollision = function () {
@@ -172,7 +172,7 @@ Avatar.prototype.checkWorldCollision = function () {
 
     ray.near = 0.01;
     ray.far = 1000;
-    var collisionResults = ray.intersectObjects(this.tube.objects);
+    var collisionResults = ray.intersectObjects(this.tube.objects, true);
     if(collisionResults.length!==0){
         //console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
         for( var i=0; i<collisionResults.length; i++){
