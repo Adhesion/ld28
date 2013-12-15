@@ -8,7 +8,7 @@ function Tube() {
 	});
 */
 
-    this.lastRoom = 20;
+    this.lastRoom = 50;
 
     var materials = [
         new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors, transparent: true } ),
@@ -91,7 +91,7 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    var segments = 10 + this.lastRoom;
+    var segments = 200 + this.lastRoom;
 
     for( var i=0; i< segments; i++){
 
