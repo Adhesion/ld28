@@ -1,6 +1,6 @@
 function PathObject(p) {
     GameObject.call(this, {
-		geometry: new THREE.CubeGeometry(10,10,10,1,1,1),
+		geometry: new THREE.CubeGeometry(10+ Math.random() * 5-5,10+ Math.random() * 5-5,10+ Math.random() * 5-5,1,1,1),
 		color: 0xff0000,
 		wireColor: 0xff0000
 	});
@@ -8,8 +8,11 @@ function PathObject(p) {
     this.pos.y = p.y;
     this.pos.z = p.z;
 
+    this.avoid = null;
     this.life = 5.0;
     this.alive = true;
+    this.speed = 500;
+    this.speedMultiplier = 2.5 + Math.random()*2.5;
 }
 
 PathObject.prototype = Object.create(GameObject.prototype);
@@ -17,6 +20,11 @@ PathObject.prototype.constructor = PathObject;
 
 PathObject.prototype.activate = function(target) {
 	this.target = target;
+    this.vel.copy(this.target.vel);
+}
+
+PathObject.prototype.avoid = function(target) {
+    //todo: do this
 }
 
 PathObject.prototype.update = function (delta) {
@@ -25,17 +33,29 @@ PathObject.prototype.update = function (delta) {
 	if( this.target == null ) {
 		this.life -= dt;
 		if(this.life < 0 && this.alive){
-			//console.log(this.life);
 			this.alive = false;
 		}
 	}
 	else {
-		this.vel.subVectors( this.target.worldPosition, this.holder.position )
-			.normalize()
-			.multiplyScalar( this.target.speed - 50);
+
+        var toTarget = new THREE.Vector3().subVectors(this.target.worldPosition, this.pos);
+        toTarget.normalize();
+        toTarget.multiplyScalar(  this.speed *  this.speedMultiplier  * dt );
+        this.vel.add(toTarget);
+
+        this.speed = this.target.speed + 70;
+
+        if(this.vel.length() > this.speed){
+            this.vel.normalize();
+            this.vel.multiplyScalar(this.speed);
+        }
 	}
 
-   this.rotation.x += dt;
-   this.rotation.y += dt;
-   this.rotation.z += dt;
+   this.rotation.x += dt*5;
+   this.rotation.y += dt*5;
+   this.rotation.z += dt*5;
+
+   this.wire.rotation = this.rotation;
 };
+
+

@@ -9,15 +9,17 @@ function Avatar(tube, input, pathObjects) {
 	this.pathObjects = pathObjects;
 	this.input = input;
 	this.movementAmplitude = 75;
+    this.collectRange = 50;
 
-	// TODO Maybe have a debug mode toggle come in here?
+    // TODO Maybe have a debug mode toggle come in here?
 	if( true ) {
-		this.wire.add( circle( 0x0fffff, 25 ) )
+		this.wire.add( circle( 0x0fffff, this.collectRange ) )
 		this.holder.add( circle( 0xffffff, this.movementAmplitude ) )
 	}
 
+
     this.wasdSpeed = 100;
-	this.speed = 800;
+	this.speed = 500;
 	this.tube = tube;
 	this.pos.z -= 100;
 	this.vel.x = 0;
@@ -46,8 +48,8 @@ function circle( color, amplitude ) {
 		geometry.vertices.push(
 			new THREE.Vector3(
 				Math.cos( segment ) * amplitude,
-				0,
-				Math.sin( segment ) * amplitude
+                Math.sin( segment ) * amplitude,
+				0
 			)
 		);
 	}
@@ -70,7 +72,7 @@ Avatar.prototype.checkPathObjects = function(delta) {
 	var remove = [];
 	this.pathObjects.forEach(function(e) {
 		var dist = e.holder.position.distanceTo( self.worldPosition );
-		if( dist < 25 ) {
+		if( dist < self.collectRange ) {
 			// move the path object to this avatar
 			self.following.push( e );
 			remove.push( e );
@@ -89,8 +91,12 @@ Avatar.prototype.update = function (delta) {
 	GameObject.prototype.update.call(this, delta);
 	var dt = delta/1000;
 
-	this.worldPosition.copy(this.holder.position).add(this.wire.position);
-	this.checkPathObjects(delta);
+	this.worldPosition.copy(this.holder.position);
+    this.worldPosition.x -= this.wire.position.x;
+    this.worldPosition.y += this.wire.position.z;
+    this.worldPosition.z += this.wire.position.y;
+
+    this.checkPathObjects(delta);
 
 	// Update inputs
 	if( this.input.w || this.input.up ) {

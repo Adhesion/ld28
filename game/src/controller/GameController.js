@@ -119,6 +119,13 @@ GameController.prototype.updatePathObjects = function (delta) {
         this.pathObjects[i].update(delta);
         if(!this.pathObjects[i].alive){
             remove.push(this.pathObjects[i]);
+        }else if( this.pathObjects[i].target!= null ){
+            for( var j=0; j<this.pathObjects.length; j++){
+                if(i!=j && this.pathObjects[j].target!= null){
+                    this.pathObjects[i].avoid(this.pathObjects[j]);
+                    this.pathObjects[j].avoid(this.pathObjects[i]);
+                }
+            }
         }
     }
 
