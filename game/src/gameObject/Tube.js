@@ -8,7 +8,7 @@ function Tube() {
 	});
 */
 
-    this.lastRoom = 50;
+    this.lastRoom = 30;
 
     var materials = [
         new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors, transparent: true } ),
@@ -27,15 +27,15 @@ function Tube() {
     this.alive = true;
 
 
-
-    var pathGeo = new THREE.Geometry();
-    var pathMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 1.0  });
-    for(var i = 0; i < this.path.length; i++) {
-        pathGeo.vertices.push( new THREE.Vector3().copy(this.path[i]) );
+    if( false ) {
+        var pathGeo = new THREE.Geometry();
+        var pathMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 1.0  });
+        for(var i = 0; i < this.path.length; i++) {
+            pathGeo.vertices.push( new THREE.Vector3().copy(this.path[i]) );
+        }
+        this.pathLine = new THREE.Line( pathGeo, pathMat );
+        this.holder.add(this.pathLine);
     }
-    this.pathLine = new THREE.Line( pathGeo, pathMat );
-    this.holder.add(this.pathLine);
-
 
     this.objects = [];
     this.makeObjects();
@@ -56,7 +56,7 @@ Tube.prototype.makeObjects = function () {
 
             x=z=0;
         }else{
-            if(Math.random() > 0.6){
+            if(Math.random() > 0.7){
 
                 var progress = i/this.path.length;
                 var c = new THREE.Color( 0xf2e85c );
@@ -91,7 +91,7 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    var segments = 200 + this.lastRoom;
+    var segments = 100 + this.lastRoom;
 
     for( var i=0; i< segments; i++){
 
