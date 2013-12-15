@@ -25,7 +25,14 @@ function Tube() {
     this.alive = true;
 
 
-    //this.pos.y = -70;
+    var pathGeo = new THREE.Geometry();
+    var pathMat = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 1.0  });
+    for(var i = 0; i < this.path.length; i++) {
+        pathGeo.vertices.push( new THREE.Vector3().copy(this.path[i]) );
+    }
+    this.pathLine = new THREE.Line( pathGeo, pathMat );
+    this.holder.add(this.pathLine);
+
 
     this.objects = [];
     this.makeObjects();
