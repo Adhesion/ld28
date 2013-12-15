@@ -157,8 +157,10 @@ Main.prototype.getAssets = function() {
         { name: 'assets/skybox/right.png', type: 'img' },
         { name: 'assets/skybox/top.png', type: 'img' },
 
-        { name: 'assets/models/tessitron_logo.js', type: 'model' },
-        { name: 'assets/models/tessitron_text.js', type: 'model' }
+        { name: 'assets/models/velocitron.js', type: 'model' },
+        { name: 'assets/models/tessitron_text.js', type: 'model' },
+
+        { name: 'assets/models/player.js', type: 'model' },
 	];
 };
 
@@ -573,12 +575,13 @@ function SplashController( game, camera, scene, isGameover ) {
     this.counter = 0;
 
     var text = window.main.loader.get("assets/models/tessitron_text.js");
-    var logo = window.main.loader.get("assets/models/tessitron_logo.js");
+    var logo = window.main.loader.get("assets/models/velocitron.js");
     var tmat = new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading  } );
     var lmat = new THREE.MeshPhongMaterial( { color: 0xf2e85c, shading: THREE.FlatShading  } );
 
     this.lm = new THREE.Mesh(logo, lmat);
     this.lm.rotation. x = Math.PI / 2;
+	this.lm.scale.set( 10, 10, 10 );
 
     this.tm = new THREE.Mesh(text, tmat);
     this.tm.position.x = -65;
