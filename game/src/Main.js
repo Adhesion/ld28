@@ -256,7 +256,25 @@ GameState.prototype.onStart = function( game ) {
 		this.uiController
 	);
 
+	if( game.settings.composer ) {
+		var renderPass = new THREE.RenderPass( this.scene, this.camera );
 
+		var bokehPass = new THREE.BokehPass( this.scene, this.camera, {
+			focus: 		0.80,
+			aperture:	0.025,
+			maxblur:	1.0,
+
+			width: window.innerWidth,
+			height: window.innerHeight
+		} );
+
+		bokehPass.renderToScreen = true;
+
+		this.composer = new THREE.EffectComposer( game.renderer );
+
+		this.composer.addPass( renderPass );
+		this.composer.addPass( bokehPass );
+	}
 
 }
 
