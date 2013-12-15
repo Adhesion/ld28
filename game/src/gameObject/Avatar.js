@@ -10,11 +10,11 @@ function Avatar(tube, input, pathObjects) {
 	this.wire.scale.set( 10, 10, 10);
 	this.pathObjects = pathObjects;
 	this.input = input;
-	this.movementAmplitude = 75;
+	this.movementAmplitude = 100;
     this.collectRange = 50;
 
     // TODO Maybe have a debug mode toggle come in here?
-	if( true ) {
+	if( false ) {
 		this.wire.add( circle( 0x0fffff, this.collectRange ) )
 		this.holder.add( circle( 0xffffff, this.movementAmplitude ) )
 	}
@@ -98,12 +98,14 @@ Avatar.prototype.update = function (delta) {
 	// deal.
     if(!this.alive)return;
 
+
+    if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom){
+        this.movementAmplitude = 2000;
+        this.wasdSpeed = 300;
+    }
+
 	var dt = delta/1000;
 
-	this.worldPosition.copy(this.holder.position);
-    this.worldPosition.x -= this.wire.position.x;
-    this.worldPosition.y += this.wire.position.z;
-    this.worldPosition.z += this.wire.position.y;
 
     this.checkPathObjects(delta);
 
@@ -131,6 +133,10 @@ Avatar.prototype.update = function (delta) {
         this.wire.position.normalize().multiplyScalar(this.movementAmplitude);
     }
 
+    this.worldPosition.copy(this.holder.position);
+    this.worldPosition.x -= this.wire.position.x;
+    this.worldPosition.y += this.wire.position.z;
+    this.worldPosition.z += this.wire.position.y;
 
     //apply friction to controlVel.
     this.controlVel.multiplyScalar(0.5);
@@ -150,7 +156,7 @@ Avatar.prototype.update = function (delta) {
 		.multiplyScalar( this.speed * dt * 0.01 );
 
     this.vel.add( this.direction );
-    this.vel.add( this.controlVel );
+    //this.vel.add( this.controlVel );
 
 	if(this.vel.length() > this.speed){
 		this.vel.normalize();
@@ -172,7 +178,7 @@ Avatar.prototype.checkWorldCollision = function () {
         direction = new THREE.Vector3().copy(this.vel),
         ray = new THREE.Raycaster(origin, direction);
 
-    ray.near = 0.01;
+    ray.near = 1;
     ray.far = 1000;
     var collisionResults = ray.intersectObjects(this.tube.objects, true);
     if(collisionResults.length!==0){

@@ -47,7 +47,7 @@ GameController.prototype.update = function (delta) {
     this.light1.position.copy(this.avatar.pos);
 
     this.avatar.update(delta);
-    this.cameraMovement(delta/1000);
+
     this.updatePathObjects(delta);
 
     if(this.avatar.tubeIndex > this.tube.path.length - this.tube.lastRoom){
@@ -58,9 +58,12 @@ GameController.prototype.update = function (delta) {
         if(this.main.state.scene.fog.far > 12000) this.main.state.scene.fog.far = 12000;
         if(this.light1.distance > 10000) this.light1.distance = 10000;
 
+        this.cameraMovement(delta/1000, this.avatar.worldPosition);
     }else{
         this.main.state.scene.fog.far = 2000;
         this.light1.distance = 1000;
+
+        this.cameraMovement(delta/1000, this.avatar.pos);
     }
 
 
@@ -69,7 +72,7 @@ GameController.prototype.update = function (delta) {
     }
 };
 
-GameController.prototype.cameraMovement = function (dt) {
+GameController.prototype.cameraMovement = function (dt, camTarget) {
     this.sway += dt * 0.5;
     if( this.sway > Math.PI * 2) this.sway -= Math.PI*2;
     var x = Math.cos(this.sway) * 10;
@@ -88,19 +91,19 @@ GameController.prototype.cameraMovement = function (dt) {
     var dir = new THREE.Vector3().copy(this.avatar.vel);
     dir.normalize();
     dir.multiplyScalar(-100);
-    var target = new THREE.Vector3().addVectors(this.avatar.pos, dir);
+    var target = new THREE.Vector3().addVectors(camTarget, dir);
     var toTarget = new THREE.Vector3().subVectors(target, this.camera.position);
     toTarget.multiplyScalar(  5 * dt );
     this.camera.position.add(toTarget);
 
     //dont get too close!
-    var toAvatar = new THREE.Vector3().subVectors(this.camera.position, this.avatar.pos);
+    var toAvatar = new THREE.Vector3().subVectors(this.camera.position, camTarget);
     var d = 100;
 
     if( toAvatar.length() < d ){
         toAvatar.normalize();
         toAvatar.multiplyScalar(d);
-        this.camera.position.copy( this.avatar.pos );
+        this.camera.position.copy( camTarget );
         this.camera.position.add(toAvatar);
     }
 
@@ -108,7 +111,7 @@ GameController.prototype.cameraMovement = function (dt) {
     //lookAt.x += this.avatar.wire.position.x * 0.2;
     //lookAt.z -= this.avatar.wire.position.y * 0.2;
 
-    this.camera.lookAt( this.avatar.pos );
+    this.camera.lookAt( camTarget );
 
 };
 
