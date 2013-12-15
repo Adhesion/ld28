@@ -56,6 +56,7 @@ PathObject.prototype.update = function (delta) {
    this.rotation.z += dt*5;
 
    this.wire.rotation = this.rotation;
+
 };
 
 

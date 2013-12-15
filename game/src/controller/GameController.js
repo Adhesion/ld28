@@ -41,9 +41,14 @@ function GameController(main, skybox) {
 }
 
 GameController.prototype.update = function (delta) {
-	this.avatar.update(delta);
+
+    this.avatar.update(delta);
     this.cameraMovement(delta/1000);
     this.updatePathObjects(delta);
+
+    if(!this.avatar.alive){
+        this.gameOver();
+    }
 };
 
 GameController.prototype.cameraMovement = function (dt) {

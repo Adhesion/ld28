@@ -17,6 +17,7 @@ function Avatar(tube, input, pathObjects) {
 		this.holder.add( circle( 0xffffff, this.movementAmplitude ) )
 	}
 
+    this.alive = true;
 
     this.wasdSpeed = 100;
 	this.speed = 500;
@@ -77,6 +78,7 @@ Avatar.prototype.checkPathObjects = function(delta) {
 			self.following.push( e );
 			remove.push( e );
 			e.activate(self);
+            self.speed += 20;
 		}
 	});
 
@@ -88,6 +90,8 @@ Avatar.prototype.checkPathObjects = function(delta) {
 Avatar.prototype.update = function (delta) {
 	// Update positions, etc, should prolly go at the end, but it isn't a big
 	// deal.
+    if(!this.alive)return;
+
 	GameObject.prototype.update.call(this, delta);
 	var dt = delta/1000;
 
@@ -150,7 +154,43 @@ Avatar.prototype.update = function (delta) {
     var lookAt = new THREE.Vector3().copy(this.pos).add(this.vel);
 
     this.holder.lookAt(lookAt);
+
+    this.checkWorldCollision();
 };
+
+Avatar.prototype.checkWorldCollision = function () {
+    //avatar vs pillars.
+    var origin = new THREE.Vector3().copy(this.worldPosition),
+        direction = new THREE.Vector3().copy(this.vel),
+        ray = new THREE.Raycaster(origin, direction);
+
+    ray.near = 1;
+    ray.far = 300;
+    var collisionResults = ray.intersectObjects(this.tube.objects);
+    if(collisionResults.length!==0){
+        //alert('Ray collides with mesh. Distance :' + collisionResults[0].distance)
+        console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
+        for( var i=0; i<collisionResults.length; i++){
+            if( collisionResults[i].distance < 10){
+                this.alive = false;
+                this.speed = 0;
+                return;
+            }
+        }
+    }
+}
+
+/*
+ //Add Ray
+ var origin = new THREE.Vector3(50, 0, 0),
+ direction = new THREE.Vector3(-1,0,0),
+ ray = new THREE.Raycaster(origin, direction),
+ collisionResults = ray.intersectObjects([mesh]);
+ if(collisionResults.length!==0){
+ alert('Ray collides with mesh. Distance :' + collisionResults[0].distance)
+ }
+
+ */
 
 Avatar.prototype.buildMesh = function () {
     var geometry = new THREE.Geometry();
