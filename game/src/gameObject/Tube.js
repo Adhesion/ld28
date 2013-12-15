@@ -1,15 +1,34 @@
 function Tube() {
-	GameObject.call(this, {
+	/*
+    GameObject.call(this, {
 		geometry: this.buildMesh(),
 		color: 0xf2e85c,
 		wireColor: 0xdbd14c,
 		doubleSided: false
 	});
-	this.pos.y = -70;
+*/
+
+    var materials = [
+        new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors, transparent: true } ),
+        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+    ];
+
+    this.wire = THREE.SceneUtils.createMultiMaterialObject( this.buildMesh(), materials );
+
+    this.pos = new THREE.Vector3(0, 0, 0);
+    this.vel = new THREE.Vector3(0, 0, 0);
+    this.rotation = new THREE.Vector3(0, 0, 0);
+
+    this.holder = new THREE.Object3D();
+    this.holder.add(this.wire);
+    this.timeMult = 1;
+    this.alive = true;
+
+
+    //this.pos.y = -70;
 
     this.objects = [];
     this.makeObjects();
-
 }
 
 Tube.prototype = Object.create(GameObject.prototype);
@@ -21,16 +40,15 @@ Tube.prototype.update = function (dt) {
 
 Tube.prototype.makeObjects = function () {
 
-    var mat = new THREE.MeshBasicMaterial({
-        color:0xf2e85c,
-        wireframe:false,
-        shading: THREE.FlatShading
-    });
+    var materials = [
+        new THREE.MeshBasicMaterial({ color:0xf2e85c, wireframe:false, shading: THREE.FlatShading }),
+        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+    ];
 
     for( var i=0; i<this.path.length; i++ ){
        if(Math.random() > 0.6){
            var h = 40 + Math.random() * 40;
-           var obj = new THREE.Mesh( new THREE.CubeGeometry(700,60,h,1,1,1) , mat);
+           var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,60,h,1,1,1), materials );
            obj.position.x = this.path[i].x + Math.random()* 200 - 100;
            obj.position.y = this.path[i].y;
            obj.position.z = this.path[i].z + Math.random()* 200 - 100;
@@ -52,6 +70,7 @@ Tube.prototype.makePath = function () {
 
     var d = 400;
     var v = new THREE.Vector3( 0, d ,0 );
+    this.tubeLength = new THREE.Vector3();
 
     for( var i=0; i< 200; i++){
 
@@ -68,6 +87,8 @@ Tube.prototype.makePath = function () {
         x += v.x;
         y += v.y;
         z += v.z;
+
+        this.tubeLength.add(v);
     }
 
     return path;
@@ -113,21 +134,26 @@ Tube.prototype.buildMesh = function () {
             // make triangles.
             v = geometry.vertices.length - 8;
 
+            var progress = this.path[i].y / this.tubeLength.length();
+
+            var c = new THREE.Color( 0xffffff );
+            //c.setHSL(1, 1, 1 );
+
             //bottom
-            geometry.faces.push( new THREE.Face3(v+0, v+5, v+4, new THREE.Vector3( 0, 0, 1 )) );
-            geometry.faces.push( new THREE.Face3(v+0, v+1, v+5, new THREE.Vector3( 0, 0, 1 )) );
+            geometry.faces.push( new THREE.Face3(v+0, v+5, v+4, new THREE.Vector3( 0, 0, 1 ), c) );
+            geometry.faces.push( new THREE.Face3(v+0, v+1, v+5, new THREE.Vector3( 0, 0, 1 ), c) );
 
             //right
-            geometry.faces.push( new THREE.Face3(v+1, v+7, v+5, new THREE.Vector3( 0, 0, 1 )) );
-            geometry.faces.push( new THREE.Face3(v+1, v+3, v+7, new THREE.Vector3( 0, 0, 1 )) );
+            geometry.faces.push( new THREE.Face3(v+1, v+7, v+5, new THREE.Vector3( 0, 0, 1 ), c) );
+            geometry.faces.push( new THREE.Face3(v+1, v+3, v+7, new THREE.Vector3( 0, 0, 1 ), c) );
 
             //top
-            geometry.faces.push( new THREE.Face3(v+3, v+2, v+7, new THREE.Vector3( 0, 0, 1 )) );
-            geometry.faces.push( new THREE.Face3(v+2, v+6, v+7, new THREE.Vector3( 0, 0, 1 )) );
+            geometry.faces.push( new THREE.Face3(v+3, v+2, v+7, new THREE.Vector3( 0, 0, 1 ), c) );
+            geometry.faces.push( new THREE.Face3(v+2, v+6, v+7, new THREE.Vector3( 0, 0, 1 ), c) );
 
             //left
-            geometry.faces.push( new THREE.Face3(v+0, v+4, v+6, new THREE.Vector3( 0, 0, 1 )) );
-            geometry.faces.push( new THREE.Face3(v+0, v+6, v+2, new THREE.Vector3( 0, 0, 1 )) );
+            geometry.faces.push( new THREE.Face3(v+0, v+4, v+6, new THREE.Vector3( 0, 0, 1 ), c) );
+            geometry.faces.push( new THREE.Face3(v+0, v+6, v+2, new THREE.Vector3( 0, 0, 1 ), c) );
         }
     }
 

@@ -26,7 +26,9 @@ function GameController(main, skybox) {
     this.shake = 0;
 
     this.light1= new THREE.PointLight( 0xffffff, 1, 3000 );
-    this.light1.position.set( 1000, 0, 0 );
+    this.light1.position.set( 0, 0, 0 );
+    this.main.state.scene.add( this.light1 );
+
 
     //this.camHolder.add( this.light1 );
     //this.camHolder.add( this.skybox );
@@ -41,6 +43,8 @@ function GameController(main, skybox) {
 }
 
 GameController.prototype.update = function (delta) {
+
+    this.light1.position.copy(this.avatar.pos);
 
     this.avatar.update(delta);
     this.cameraMovement(delta/1000);
