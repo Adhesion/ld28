@@ -29,8 +29,8 @@ Tube.prototype.makeObjects = function () {
 
     for( var i=0; i<this.path.length; i++ ){
        if(Math.random() > 0.6){
-           var h = 30 + Math.random() * 30;
-           var obj = new THREE.Mesh( new THREE.CubeGeometry(500,50,h,1,1,1) , mat);
+           var h = 40 + Math.random() * 40;
+           var obj = new THREE.Mesh( new THREE.CubeGeometry(700,60,h,1,1,1) , mat);
            obj.position.x = this.path[i].x + Math.random()* 200 - 100;
            obj.position.y = this.path[i].y;
            obj.position.z = this.path[i].z + Math.random()* 200 - 100;
@@ -53,7 +53,7 @@ Tube.prototype.makePath = function () {
     var d = 400;
     var v = new THREE.Vector3( 0, d ,0 );
 
-    for( var i=0; i< 1000; i++){
+    for( var i=0; i< 200; i++){
 
         path.push( new THREE.Vector3( x, y, z ) );
 
@@ -82,7 +82,7 @@ Tube.prototype.buildMesh = function () {
 
     for( var i=0; i<this.path.length; i++ ){
 
-        var w = 100 + Math.random() * 50;
+        var w = 150 + Math.random() * 50;
         var v0 = new THREE.Vector3( -w, 0, -w);
         var v1 = new THREE.Vector3( w, 0, -w);
         var v2 = new THREE.Vector3( -w, 0, w);
@@ -131,6 +131,7 @@ Tube.prototype.buildMesh = function () {
         }
     }
 
+    geometry.computeFaceNormals();
     geometry.computeBoundingSphere();
 
     return geometry;

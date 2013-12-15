@@ -1,9 +1,10 @@
-function PathObject(p) {
+function PathObject(p, tube) {
     GameObject.call(this, {
 		geometry: new THREE.CubeGeometry(10+ Math.random() * 5-5,10+ Math.random() * 5-5,10+ Math.random() * 5-5,1,1,1),
 		color: 0xff0000,
 		wireColor: 0xff0000
 	});
+    //this.tube = tube;
     this.pos.x = p.x;
     this.pos.y = p.y;
     this.pos.z = p.z;
@@ -49,6 +50,8 @@ PathObject.prototype.update = function (delta) {
             this.vel.normalize();
             this.vel.multiplyScalar(this.speed);
         }
+
+        this.checkWallCollision();
 	}
 
    this.rotation.x += dt*5;
@@ -58,5 +61,11 @@ PathObject.prototype.update = function (delta) {
    this.wire.rotation = this.rotation;
 
 };
+
+PathObject.prototype.checkWallCollision = function () {
+
+
+
+}
 
 

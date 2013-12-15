@@ -164,33 +164,20 @@ Avatar.prototype.checkWorldCollision = function () {
         direction = new THREE.Vector3().copy(this.vel),
         ray = new THREE.Raycaster(origin, direction);
 
-    ray.near = 1;
-    ray.far = 300;
+    ray.near = 0.01;
+    ray.far = 1000;
     var collisionResults = ray.intersectObjects(this.tube.objects);
     if(collisionResults.length!==0){
-        //alert('Ray collides with mesh. Distance :' + collisionResults[0].distance)
-        console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
+        //console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
         for( var i=0; i<collisionResults.length; i++){
-            if( collisionResults[i].distance < 10){
+            if( collisionResults[i].distance < 20){
                 this.alive = false;
-                this.speed = 0;
+                //this.speed = 0;
                 return;
             }
         }
     }
 }
-
-/*
- //Add Ray
- var origin = new THREE.Vector3(50, 0, 0),
- direction = new THREE.Vector3(-1,0,0),
- ray = new THREE.Raycaster(origin, direction),
- collisionResults = ray.intersectObjects([mesh]);
- if(collisionResults.length!==0){
- alert('Ray collides with mesh. Distance :' + collisionResults[0].distance)
- }
-
- */
 
 Avatar.prototype.buildMesh = function () {
     var geometry = new THREE.Geometry();

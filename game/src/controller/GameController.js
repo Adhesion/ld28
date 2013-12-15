@@ -111,7 +111,7 @@ GameController.prototype.updatePathObjects = function (delta) {
     if(this.spawnTimer <= 0){
        this.spawnTimer = 0.25 + Math.random();
        if( this.avatar.tubeIndex + 3 < this.tube.path.length ){
-           var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone() );
+           var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone(), this.tube);
            pathObject.pos.x += Math.random() * 100 - 50;
            pathObject.pos.z += Math.random() * 100 - 50;
            this.main.state.scene.add( pathObject.holder );
