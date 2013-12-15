@@ -65,8 +65,10 @@ Avatar.prototype.checkPathObjects = function(delta) {
 	var self = this;
 
 	// Update the known followers
+	var c = new THREE.Color( 0xff0000 ).lerp( new THREE.Color(0xffffff), self.following.length / self.tubeIndex );
 	this.following.forEach(function(e) {
 		e.update(delta);
+		e.wireMat.color = c;
 	});
 
 	// Find any new followers and remove them from the global list.
@@ -78,7 +80,9 @@ Avatar.prototype.checkPathObjects = function(delta) {
 			self.following.push( e );
 			remove.push( e );
 			e.activate(self);
-            self.speed += 20;
+			e.wireMat.transparent = true;
+			e.wireMat.opacity = .8;
+			self.speed += 20;
 		}
 	});
 
