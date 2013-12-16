@@ -68,8 +68,19 @@
       <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="124" column="35" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.66024095">
+            <state line="24" column="26" selection-start="622" selection-end="622" vertical-scroll-proportion="0.49156627">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="741" column="29" selection-start="20996" selection-end="20996" vertical-scroll-proportion="-19.2">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -237,7 +248,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="0" width="1441" height="1040" extended-state="0" />
+    <frame x="2" y="0" width="1441" height="1040" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -360,15 +371,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="759" column="0" selection-start="21390" selection-end="21390" vertical-scroll-proportion="-0.6096386">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Particle.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="49" selection-start="634" selection-end="634" vertical-scroll-proportion="-8.84">
@@ -397,9 +399,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="741" column="29" selection-start="20996" selection-end="20996" vertical-scroll-proportion="-19.2">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="35" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.66024095">
+        <state line="24" column="26" selection-start="622" selection-end="622" vertical-scroll-proportion="0.49156627">
           <folding />
         </state>
       </provider>

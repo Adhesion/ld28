@@ -22,7 +22,7 @@ function GameController(main, skybox) {
 
     this.isLastRoom = false;
     this.isGameOver = false;
-    this.gameOverTimer = 2;
+    this.gameOverTimer = 1;
 
     this.main.state.scene.fog = new THREE.Fog( 0x2e2e2e, 1, 2000 );
 
@@ -41,6 +41,7 @@ function GameController(main, skybox) {
     window.game_win = false;
 
     this.main.fadeToSong("ld28-game");
+
 }
 
 GameController.prototype.onBeat = function() {
