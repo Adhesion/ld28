@@ -68,7 +68,13 @@ GameController.prototype.update = function (delta) {
 
 
     if(!this.avatar.alive){
-        this.gameOver();
+		if( !this.deathticker ) {
+			this.deathticker = 0;
+		}
+		this.deathticker += delta;
+		if( this.deathticker > 5000 ){
+			this.gameOver();
+		}
     }
 };
 

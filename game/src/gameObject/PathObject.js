@@ -38,8 +38,7 @@ PathObject.prototype.update = function (delta) {
 			this.alive = false;
 		}
 	}
-	else {
-
+	else if( this.target.alive ) {
         var toTarget = new THREE.Vector3().subVectors(this.target.worldPosition, this.pos);
         toTarget.normalize();
         toTarget.multiplyScalar(  this.speed *  this.speedMultiplier  * dt );

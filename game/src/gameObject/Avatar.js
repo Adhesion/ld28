@@ -99,7 +99,10 @@ Avatar.prototype.checkPathObjects = function(delta) {
 Avatar.prototype.update = function (delta) {
 	// Update positions, etc, should prolly go at the end, but it isn't a big
 	// deal.
-    if(!this.alive)return;
+	this.checkPathObjects(delta);
+    if(!this.alive) {
+		return;
+	}
 
 
     if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom){
@@ -110,7 +113,6 @@ Avatar.prototype.update = function (delta) {
 	var dt = delta/1000;
 
 
-    this.checkPathObjects(delta);
 
 	// Update inputs
 	if( this.input.w || this.input.up ) {
