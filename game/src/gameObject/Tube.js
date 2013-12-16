@@ -98,7 +98,7 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    var segments = 100 + this.lastRoom;
+    var segments = 4 + this.lastRoom;
 
     for( var i=0; i< segments; i++){
 

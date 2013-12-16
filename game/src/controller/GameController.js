@@ -1,5 +1,7 @@
 function GameController(main, skybox) {
 
+    //Howler.mute();
+
     this.main = main;
     this.skybox = skybox;
     this.input = new Input();
@@ -9,6 +11,7 @@ function GameController(main, skybox) {
     this.cameraTarget = new THREE.Vector3();
     this.camera.position.y = -100;
 
+    this.camTarget = new THREE.Vector3();
     this.main.state.scene.add( this.camera );
     this.main.state.scene.add( new THREE.AmbientLight( 0x222222 ) );
 
@@ -76,7 +79,9 @@ GameController.prototype.update = function (delta) {
         if(this.main.state.scene.fog.far > 8000) this.main.state.scene.fog.far = 8000;
         if(this.light1.distance > 7000) this.light1.distance = 7000;
 
-        this.cameraMovement(delta/1000, this.avatar.worldPosition);
+        if(this.avatar.alive) this.cameraMovement(delta/1000, this.avatar.worldPosition);
+
+        this.updateEndRoomObjects(delta);
 
     }else{
         this.main.state.scene.fog.far = 2000;
@@ -85,14 +90,11 @@ GameController.prototype.update = function (delta) {
         this.cameraMovement(delta/1000, this.avatar.pos);
     }
 
-
-
     if(!this.avatar.alive){
         if(!this.isGameOver){
             for( var i=0; i<30; i++){
                 //pos, color, wireColor, size, life, speed
                 var p =new THREE.Vector3().copy(this.avatar.worldPosition);
-                console.log(p);
                 var particle = new Particle(p, 0xff0000, 0xff0000, 5 + Math.random() * 10, 2.0,400);
                 this.particles.push(particle);
                 this.main.state.scene.add( particle.holder );
@@ -100,15 +102,58 @@ GameController.prototype.update = function (delta) {
             }
             this.shake += 1.0;
             this.main.state.scene.remove( this.avatar.holder );
+            if(this.avatar.lastRoom){
+                this.gameOverTimer = 3.0;
+                this.main.fadeToSong("ld28-boss");
+            }
             this.isGameOver = true;
-            if(this.avatar.lastRoom) this.main.fadeToSong("ld28-boss");
+
+            new TWEEN.Tween(this.camera.position).easing(TWEEN.Easing.Quadratic.InOut).to(
+                {y:this.camera.position.y - 800}, 2.0*1000).start();
         }
         this.gameOverTimer-=delta/1000;
         if(this.gameOverTimer < 0){
             this.gameOver();
         }
     }
+
+    this.camera.lookAt( this.camTarget );
 };
+
+GameController.prototype.updateEndRoomObjects = function (delta) {
+    var objects = this.tube.endRoom.objects;
+
+    for( var i=0; i<objects.length; i++){
+        objects[i].update(delta);
+
+        if(this.avatar.alive){
+            /*
+            var toTarget = new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position).sub( this.avatar.pos );
+            if(toTarget.length() < objects[i].size){
+                this.avatar.speed = 0;
+                this.avatar.alive = false;
+                objects[i].hitByAvatar(this.avatar);
+            }
+            */
+        }else{
+            for( var j=0; j<objects.length; j++){
+                if(i != j ){
+                    if( objects[i].checkCollision(objects[j]) ){
+                        this.gameOverTimer += 2.0;
+                        if(this.gameOverTimer > 3.0)this.gameOverTimer = 3.0;
+
+                        var p = new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position);
+                        new TWEEN.Tween(this.camTarget).easing(TWEEN.Easing.Quadratic.InOut).to(
+                            {x:p.x , y: p.y, z:p.z},
+                            1.0*1000).start();
+                    }
+                }
+            }
+        }
+
+    }
+
+}
 
 GameController.prototype.cameraMovement = function (dt, camTarget) {
     this.sway += dt * 0.5;
@@ -154,7 +199,8 @@ GameController.prototype.cameraMovement = function (dt, camTarget) {
     //lookAt.x += this.avatar.wire.position.x * 0.2;
     //lookAt.z -= this.avatar.wire.position.y * 0.2;
 
-    this.camera.lookAt( camTarget );
+    this.camTarget.copy(camTarget);
+
 
 };
 

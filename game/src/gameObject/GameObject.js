@@ -1,5 +1,6 @@
 function GameObject(data) {
-	var geometry = data.geometry;
+
+    var geometry = data.geometry;
 	this.wireColor = data.wireColor || 0xffffff;
 	this.color = data.color || 0xffffff;
 
@@ -33,7 +34,7 @@ function GameObject(data) {
 
 GameObject.prototype.update = function (delta) {
 
-    if(!dt) dt = 0;
+    if(!delta) dt = 0;
     var dt = delta/1000;
 
     this.pos.x += this.vel.x * dt * this.timeMult;

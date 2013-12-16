@@ -8,15 +8,11 @@
 EndRoom = function () {
     this.holder = new THREE.Object3D();
 
+    this.objects = [];
 
-    var materials = [
-        new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
-        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
-    ];
-    
-    var scale = 100
-    var groupSize = 6
-    var spacing = 2
+    var scale = 100;
+    var groupSize = 5
+    var spacing = 3
     
     for(var i = 0; i < groupSize; i++) {
     	
@@ -29,30 +25,36 @@ EndRoom = function () {
     				
     				//something is wonky with positioning, it seems slightly random each time
     					//if you can, see if you can center the group in the room
-    				
-    				var brick = THREE.SceneUtils.createMultiMaterialObject(window.main.loader.get("assets/models/brick.js"), materials );
-    				brick.scale.set(scale, scale, scale);
-    				brick.position.z = i * scale * spacing - (scale * groupSize * .5 * spacing);
-    				brick.position.y = 3000 + k * scale * spacing * 2;
-    				brick.position.x = j * scale * spacing - (scale * groupSize * .5 * spacing);
-    				this.holder.add(brick);
-    			
-    		}
+
+
+                    var obj = new EndRoomObject( "brick",
+                                                        new THREE.Vector3( i * scale * spacing - (scale * groupSize * .5 * spacing),
+                                                        3000 + k * scale * spacing * 2,
+                                                        j * scale * spacing - (scale * groupSize * .5 * spacing) )) ;
+    				this.holder.add(obj.mesh);
+                    this.objects.push(obj);
+            }
     	}
     }
-    
-    
-    
-    
+
+    var materials = [
+        new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
+        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+    ];
+
     var endWall = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(4000,200,2000,1,1,1), materials );
     endWall.position.x = 0;
     endWall.position.y = 8000;
     endWall.position.z = 0;
     this.holder.add(endWall);
+
 };
 
 EndRoom.prototype = {
     init:function () {
+        //TODO: init
+    },
+    update:function (delta) {
         //TODO: init
     }
 };

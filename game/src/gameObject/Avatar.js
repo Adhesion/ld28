@@ -200,8 +200,18 @@ Avatar.prototype.checkWorldCollision = function () {
         //console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
         for( var i=0; i<collisionResults.length; i++){
             if( collisionResults[i].distance < 20){
+                var bossHit = false;
+                var objects = this.tube.endRoom.objects;
+                for( var j=0; j<objects.length; j++){
 
-                window.main.loader.get("sound/death").play();
+                    if( collisionResults[i].object == objects[j].mesh.children[0] ){
+                        objects[j].hitByAvatar(this);
+                        window.main.loader.get("sound/bossdeath").play();
+                        break;
+                    }
+                }
+
+                if(!bossHit)window.main.loader.get("sound/death").play();
                 this.alive = false;
                 this.speed = 0;
 
