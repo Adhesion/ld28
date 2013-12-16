@@ -80,20 +80,12 @@ Tube.prototype.makeObjects = function () {
         }
     }
 
-    materials = [
-        new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
-        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
-    ];
 
-    var endWall = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(4000,2000,200,1,1,1), materials );
-    endWall.position.x = this.path[this.path.length-2].x;
-    endWall.position.y = this.path[this.path.length-2].y;
-    endWall.position.z = this.path[this.path.length-2].z;
-    endWall.up = new THREE.Vector3(0,0,1);
-    endWall.lookAt(this.path[this.path.length-3]);
-    this.holder.add(endWall);
-    this.objects.push(endWall);
 
+    this.endRoom = new EndRoom();
+    this.endRoom.holder.position.copy( this.path[this.path.length - this.lastRoom] );
+    this.holder.add(this.endRoom.holder);
+    this.objects.push(this.endRoom.holder);
 }
 
 Tube.prototype.makePath = function () {
