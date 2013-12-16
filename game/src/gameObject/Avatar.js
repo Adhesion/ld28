@@ -1,28 +1,50 @@
 function Avatar(tube, input, pathObjects) {
-	GameObject.call(this, {
-		geometry: this.buildMesh(),
-		color: 0xf2e85c,
-		wireColor: 0xff0000,
-		doubleSided: true
-	});
 
-	this.wire.rotateOnAxis( new THREE.Vector3( 1, 1, 0), Math.PI / 2);
-	this.wire.scale.set( 10, 10, 10);
+    var geometry = this.buildMesh();
+
+    this.pos = new THREE.Vector3(0, 0, 0);
+    this.vel = new THREE.Vector3(0, 0, 0);
+    this.rotation = new THREE.Vector3(0, 0, 0);
+
+
+    var materials = [
+        new THREE.MeshBasicMaterial({ color:0xdbd14c, wireframe:false, shading: THREE.FlatShading }),
+        new THREE.MeshBasicMaterial( { color: 0xffffff, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+    ];
+
+    this.mesh = THREE.SceneUtils.createMultiMaterialObject( geometry, materials );
+    this.mesh.scale.set( 30, 30, 30);
+    this.mesh.rotation.x = Math.PI * 0.45;
+    this.mesh.rotation.y = Math.PI * 0.5;
+
+    this.meshHolder = new THREE.Object3D();
+    this.meshHolder.add(this.mesh);
+
+    this.sway = 0;
+
+    this.holder = new THREE.Object3D();
+    this.holder.add(this.meshHolder);
+
+    this.timeMult = 1;
+    this.alive = true;
+
 	this.pathObjects = pathObjects;
 	this.input = input;
-	this.movementAmplitude = 100;
+	this.movementAmplitude = 110;
     this.collectRange = 50;
     this.lastRoom=false;
 
     // TODO Maybe have a debug mode toggle come in here?
-	if( false ) {
-		this.wire.add( circle( 0x0fffff, this.collectRange ) );
-		this.holder.add( circle( 0xffffff, this.movementAmplitude ) );
+	if( true ) {
+        //this.meshHolder.add( circle( 0x0fffff, this.collectRange ) );
+
 	}
 
-    this.alive = true;
+    this.ring = circle( 0xffffff, this.movementAmplitude );
+    this.holder.add( this.ring );
 
-    this.wasdSpeed = 120;
+
+    this.wasdSpeed = 220;
 	this.speed = 500;
 	this.tube = tube;
 	this.pos.z -= 100;
@@ -32,10 +54,14 @@ function Avatar(tube, input, pathObjects) {
 	this.tubeIndex = 1;
 	this.direction = new THREE.Vector3(0,0,0);
 	this.controlVel = new THREE.Vector3();
+    this.worldControlVel = new THREE.Vector3(0,0,0);
 	this.focus = new THREE.Vector3();
 	this.holder.up = new THREE.Vector3(0,0,1);
 	this.worldPosition = new THREE.Vector3();
 	this.following = [];
+
+    this.scoreTick =0;
+    this.beatTick = 0;
 }
 
 
@@ -43,7 +69,7 @@ function circle( color, amplitude ) {
 	var geometry = new THREE.Geometry();
 	var material = new THREE.LineBasicMaterial({
 		color: color,
-		opacity: 1.0
+		opacity: 0.5
 	});
 	var resolution = 100;
 	var size = 360 / resolution;
@@ -83,8 +109,8 @@ Avatar.prototype.checkPathObjects = function(delta) {
 			self.following.push( e );
 			remove.push( e );
 			e.activate(self);
-			e.wireMat.transparent = true;
-			e.wireMat.opacity = .8;
+			e.colorMat.transparent = true;
+			e.colorMat.opacity = .8;
 			self.speed += 20;
 
             // pickup sound - find position of pickup in cam coords for THREE D SOUNDS WOW
@@ -101,6 +127,23 @@ Avatar.prototype.checkPathObjects = function(delta) {
 	}
 }
 
+Avatar.prototype.onBeat = function () {
+
+    if(this.beatTick == 0){
+
+        this.mesh.children[0].scale.set(1.05,1.05,1.05);
+        new TWEEN.Tween(this.mesh.children[0].scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
+
+        this.beatTick = 1;
+    }else{
+
+        this.mesh.children[1].scale.set(1.5,1.5,1.5);
+        new TWEEN.Tween(this.mesh.children[1].scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
+
+        this.beatTick = 0;
+    }
+}
+
 Avatar.prototype.update = function (delta) {
 	// Update positions, etc, should prolly go at the end, but it isn't a big
 	// deal.
@@ -109,53 +152,67 @@ Avatar.prototype.update = function (delta) {
 		return;
 	}
 
-
-    if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom){
+    if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom && !this.lastRoom){
         this.movementAmplitude = 1000;
-        this.wasdSpeed = 500;
         this.lastRoom = true;
+        this.holder.remove( this.ring );
     }
 
 	var dt = delta/1000;
 
+    this.scoreTick -= dt;
+    if(this.scoreTick < 0){
+        this.scoreTick = 0.05;
+        window.main.state.uiController.addScore(1 + this.following.length);
+    }
 
-
+    var m = 1;
+    var moved = false;
 	// Update inputs
 	if( this.input.w || this.input.up ) {
-		this.controlVel.y += this.wasdSpeed * dt;
+		this.controlVel.y += this.wasdSpeed * dt * m;
+        moved = true;
 	}
 	if( this.input.s || this.input.down ) {
-		this.controlVel.y -= this.wasdSpeed  * dt;
-	}
+		this.controlVel.y -= this.wasdSpeed  * dt * m;
+        moved = true;
+    }
 	if( this.input.d || this.input.right ) {
-		this.controlVel.x -= this.wasdSpeed  * dt;
-	}
+		this.controlVel.x -= this.wasdSpeed  * dt * m;
+        moved = true;
+    }
 	if( this.input.a || this.input.left ) {
-		this.controlVel.x += this.wasdSpeed  * dt;
-	}
+		this.controlVel.x += this.wasdSpeed  * dt * m;
+        moved = true;
+    }
 
+    //apply friction to controlVel.
+    //if(!moved)
+    this.controlVel.multiplyScalar(0.5);
 
 	if( this.controlVel.length() > this.wasdSpeed) {
 		this.controlVel.normalize().multiplyScalar(this.wasdSpeed);
 	}
 
-    this.wire.position.add( this.controlVel );
+    this.meshHolder.position.add( this.controlVel );
+    this.worldControlVel.x = this.controlVel.x;
+    this.worldControlVel.y = this.controlVel.z;
+    this.worldControlVel.z = this.controlVel.y;
 
-    if( this.wire.position.length() > this.movementAmplitude) {
-        this.wire.position.normalize().multiplyScalar(this.movementAmplitude);
+
+    if( this.meshHolder.position.length() > this.movementAmplitude) {
+        this.meshHolder.position.normalize().multiplyScalar(this.movementAmplitude);
     }
 
     this.worldPosition.copy(this.holder.position);
-    this.worldPosition.x -= this.wire.position.x;
-    this.worldPosition.y += this.wire.position.z;
-    this.worldPosition.z += this.wire.position.y;
+    this.worldPosition.x -= this.meshHolder.position.x;
+    this.worldPosition.y += this.meshHolder.position.z;
+    this.worldPosition.z += this.meshHolder.position.y;
 
-    //apply friction to controlVel.
-    this.controlVel.multiplyScalar(0.5);
 
 	if(this.pos.y > this.focus.y ){
 		this.tubeIndex++;
-		window.main.state.uiController.addScore(1* this.following.length);
+
 		if(this.tubeIndex >= this.tube.path.length){
 			//this.tubeIndex= 0;
 			//this.pos.x = this.pos.y = this.pos.z = 0;
@@ -178,8 +235,17 @@ Avatar.prototype.update = function (delta) {
 
 
     var lookAt = new THREE.Vector3().copy(this.pos).add(this.vel);
-
     this.holder.lookAt(lookAt);
+
+    this.sway += dt* 3;
+    if(this.sway > Math.PI*2) this.sway -= Math.PI*2;
+
+    this.mesh.position.y = Math.sin(this.sway) * 4;
+    this.mesh.rotation.z = Math.cos(this.sway) * 0.1;
+
+    this.meshHolder.rotation.x = this.controlVel.y * -0.1;
+    this.meshHolder.rotation.z = this.controlVel.x * -0.1;
+    //this.wire.rotation.y = this.controlVel.x * 0.1;
 
     this.checkWorldCollision();
 	GameObject.prototype.update.call(this, delta);
@@ -190,7 +256,7 @@ Avatar.prototype.checkWorldCollision = function () {
 
     //avatar vs pillars.
     var origin = new THREE.Vector3().copy(this.worldPosition),
-        direction = new THREE.Vector3().copy(this.vel),
+        direction = new THREE.Vector3().copy(this.vel).add(this.worldControlVel),
         ray = new THREE.Raycaster(origin, direction);
 
     ray.near = 1;

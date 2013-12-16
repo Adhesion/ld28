@@ -11,14 +11,16 @@ EndRoom = function () {
     this.objects = [];
 
     var scale = 100;
-    var groupSize = 5
-    var spacing = 3
+    var x = 9;
+    var y = 3;
+    var z = 4;
+    var spacing = 3;
     
-    for(var i = 0; i < groupSize; i++) {
+    for(var i = 0; i < x; i++) {
     	
-   	 	for(var j = 0; j < groupSize; j++) {
+   	 	for(var j = 0; j < z; j++) {
     		
-    		for( var k = 0; k < groupSize; k++) {
+    		for( var k = 0; k < y; k++) {
     				
     				//randomly replace (groupSize * 2) bricks with bombs 
     				//randomly replace (groupSize * 4) bricks with gems
@@ -28,9 +30,9 @@ EndRoom = function () {
 
 
                     var obj = new EndRoomObject( "brick",
-                                                        new THREE.Vector3( i * scale * spacing - (scale * groupSize * .5 * spacing),
-                                                        3000 + k * scale * spacing * 2,
-                                                        j * scale * spacing - (scale * groupSize * .5 * spacing) )) ;
+                                                        new THREE.Vector3( i * scale * spacing - (scale * x * .5 * spacing),
+                                                        5000 + k * scale * spacing * 2,
+                                                        j * scale * spacing - (scale * z * .5 * spacing) )) ;
     				this.holder.add(obj.mesh);
                     this.objects.push(obj);
             }

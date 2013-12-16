@@ -7,7 +7,7 @@ function Tube() {
 		doubleSided: false
 	});
 */
-
+    this.tubeSegments = 70;
     this.lastRoom = 10;
 
     var materials = [
@@ -54,10 +54,10 @@ Tube.prototype.makeObjects = function () {
 
     for( var i=0; i<this.path.length; i++ ){
 
-        if( i >= this.path.length -  this.lastRoom){
+        if( i >= this.path.length -  this.lastRoom - 5){
 
         }else{
-            if(Math.random() > 0.6){
+            if( i > 5 && Math.random() > 0.6){
 
                 var progress = i/this.path.length;
                 var c = new THREE.Color( 0xf2e85c );
@@ -82,7 +82,7 @@ Tube.prototype.makeObjects = function () {
 
 
     this.endRoom = new EndRoom();
-    this.endRoom.holder.position.copy( this.path[this.path.length - this.lastRoom + 1] );
+    this.endRoom.holder.position.copy( this.path[this.path.length - this.lastRoom] );
     this.holder.add(this.endRoom.holder);
     this.objects.push(this.endRoom.holder);
 }
@@ -96,32 +96,28 @@ Tube.prototype.makePath = function () {
 
     var d = 400;
     var v = new THREE.Vector3( 0, d ,0 );
-    this.tubeLength = new THREE.Vector3();
 
-    var segments = 4 + this.lastRoom;
-
-    for( var i=0; i< segments; i++){
+    //tube
+    for( var i=0; i< this.tubeSegments-3 ; i++){
 
         path.push( new THREE.Vector3( x, y, z ) );
 
-        if( i < segments -  this.lastRoom){
-            //dont try to turn!
-            if(Math.random() > 0.9){
-                //turn.
-                if(Math.random() > 0.5) d = 200 + Math.round( Math.random() * 3 ) * 100;
-                v.x = Math.random() * d - d*0.5;
-                v.y = d;
-                v.z = Math.random() * d - d*0.5;
-            }
-        }else{
-            v.y = 1000;
+        if(Math.random() > 0.7){
+            //turn.
+            if(Math.random() > 0.5) d = 200 + Math.round( Math.random() * 3 ) * 100;
+            v.x = Math.random() * d - d*0.5;
+            v.y = d;
+            v.z = Math.random() * d - d*0.5;
         }
 
         x += v.x;
         y += v.y;
         z += v.z;
+    }
 
-        this.tubeLength.add(v);
+    // last room
+    for( var i=0; i< this.lastRoom +3; i++){
+        path.push( new THREE.Vector3( x, y + 1000 * i, z ) );
     }
 
     return path;
@@ -139,7 +135,7 @@ Tube.prototype.buildMesh = function () {
         var w = 150 + Math.random() * 50;
         var h = w;
 
-        if( i >= this.path.length -  this.lastRoom){
+        if( i >= this.path.length -  this.lastRoom + 1){
             var roomi = i+ this.lastRoom - this.path.length;
             //boss area, make it really big!
             w = 2000;

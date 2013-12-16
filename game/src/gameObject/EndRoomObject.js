@@ -17,6 +17,8 @@ function EndRoomObject( type, pos ) {
             break;
     }
 
+    this.color = 0xffffff;
+
     var materials = [
         new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
         new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
@@ -25,6 +27,8 @@ function EndRoomObject( type, pos ) {
     this.mesh = THREE.SceneUtils.createMultiMaterialObject( geometry, materials );
     this.mesh.scale.set(this.size, this.size, this.size);
     this.mesh.position.copy(pos);
+
+    this.active = false;
 
     this.collided = false;
     this.timeMult = 1;
@@ -37,7 +41,14 @@ EndRoomObject.prototype.hitByAvatar = function (avatar) {
     this.toTarget.normalize();
     this.toTarget.multiplyScalar( avatar.vel.length() );
 
-    this.vel.copy( this.toTarget );
+    window.main.state.uiController.addScore(Math.floor( this.toTarget.length() ));
+
+    this.vel.add( this.toTarget );
+
+    if(this.vel.length > 1500){
+        this.vel.normalize();
+        this.vel.multiplyScalar(1500);
+    }
 }
 
 EndRoomObject.prototype.checkCollision = function (obj) {
@@ -62,6 +73,11 @@ EndRoomObject.prototype.checkCollision = function (obj) {
         this.toTarget.normalize();
         this.toTarget.multiplyScalar(this.vel.length() * -0.8);
         this.vel.copy(this.toTarget);
+
+
+        window.main.state.uiController.addScore(Math.floor( this.vel.length()* 0.25 ));
+
+
         return true;
     }
 
@@ -76,14 +92,18 @@ EndRoomObject.prototype.update = function (delta) {
     this.pos.y += this.vel.y * dt * this.timeMult;
     this.pos.z += this.vel.z * dt * this.timeMult;
 
-    if(this.x > 2000)   { this.x = 2000;    this.vel.x *= -1; }
-    if(this.x < -2000)  { this.x = -2000;   this.vel.x *= -1; }
+    var x = 2000 - this.size * 0.5;
+    var y = 8000 - this.size * 0.5;
+    var z = 1000 - this.size * 0.5;
 
-    if(this.y > 8000)   { this.y = 8000;    this.vel.y *= -1; }
-    if(this.y < 0)      { this.y = 0;       this.vel.y *= -1; }
+    if(this.pos.x > x)   { this.pos.x = x;    this.vel.x *= -0.2; }
+    if(this.pos.x < -x)  { this.pos.x = -x;   this.vel.x *= -0.2; }
 
-    if(this.z > 1000)   { this.z = 1000;    this.vel.z *= -1; }
-    if(this.z < -1000)  { this.z = -1000;   this.vel.z *= -1; }
+    if(this.pos.y > y)   { this.pos.y = y;    this.vel.y *= -0.2; }
+    if(this.pos.y < -y)  { this.pos.y = -y;   this.vel.y *= -0.2; }
+
+    if(this.pos.z > z)   { this.pos.z = z;    this.vel.z *= -0.2; }
+    if(this.pos.z < -z)  { this.pos.z = -z;   this.vel.z *= -0.2; }
 
     this.mesh.rotation.y += this.vel.x * dt * this.timeMult * 0.001;
     this.mesh.rotation.z += this.vel.y * dt * this.timeMult * 0.001;

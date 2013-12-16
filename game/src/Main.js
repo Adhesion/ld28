@@ -720,7 +720,7 @@ function SplashController( game, camera, scene, isGameover ) {
     this.scoreMesh = new THREE.Mesh(textGeom, tmat );
     textGeom.computeBoundingBox();
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
-    this.scoreMesh.position.set( -0.5 * textWidth, -40, 120 );
+    this.scoreMesh.position.set( -0.5 * textWidth - 8, -50, 120 );
 
 
     new TWEEN.Tween(this.scoreMesh.position).easing(TWEEN.Easing.Quadratic.Out).to({x: -0.5 * textWidth, y: -15, z:0}, 1.5*1000).start();

@@ -1,6 +1,6 @@
 function GameController(main, skybox) {
 
-    //Howler.mute();
+    Howler.mute();
 
     this.main = main;
     this.skybox = skybox;
@@ -51,9 +51,12 @@ GameController.prototype.onBeat = function() {
     // BEAT IT, JUST BEAT IT
     //console.log("BEAT IT BABY");
 
+    this.avatar.onBeat();
+
     for( var i=0; i<this.pathObjects.length; i++){
-        this.pathObjects[i].holder.scale.set(1.8,1.8,1.8);
-        new TWEEN.Tween(this.pathObjects[i].holder.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
+        this.pathObjects[i].onBeat();
+        //this.pathObjects[i].holder.scale.set(1.8,1.8,1.8);
+        //new TWEEN.Tween(this.pathObjects[i].holder.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
     }
 
 }
@@ -80,6 +83,7 @@ GameController.prototype.update = function (delta) {
         if(this.light1.distance > 7000) this.light1.distance = 7000;
 
         if(this.avatar.alive) this.cameraMovement(delta/1000, this.avatar.worldPosition);
+        else this.checkFollowersVsEndRoomObjects();
 
         this.updateEndRoomObjects(delta);
 
@@ -103,13 +107,20 @@ GameController.prototype.update = function (delta) {
             this.shake += 1.0;
             this.main.state.scene.remove( this.avatar.holder );
             if(this.avatar.lastRoom){
+                this.shotgunAvatarFollowers();
                 this.gameOverTimer = 3.0;
                 this.main.fadeToSong("ld28-boss");
+
+                new TWEEN.Tween(this.camera.position).easing(TWEEN.Easing.Quadratic.InOut).to(
+                    {y:this.camera.position.y - 1000}, 2.0*1000).start();
+            }else{
+                new TWEEN.Tween(this.camera.position).easing(TWEEN.Easing.Quadratic.InOut).to(
+                    {y:this.camera.position.y - 300}, 2.0*1000).start();
             }
+
             this.isGameOver = true;
 
-            new TWEEN.Tween(this.camera.position).easing(TWEEN.Easing.Quadratic.InOut).to(
-                {y:this.camera.position.y - 800}, 2.0*1000).start();
+
         }
         this.gameOverTimer-=delta/1000;
         if(this.gameOverTimer < 0){
@@ -119,6 +130,34 @@ GameController.prototype.update = function (delta) {
 
     this.camera.lookAt( this.camTarget );
 };
+
+GameController.prototype.checkFollowersVsEndRoomObjects = function () {
+    var objects = this.tube.endRoom.objects;
+    var toObject = new THREE.Vector3();
+
+    for( var i=0; i<this.avatar.following.length; i++){
+        if(this.avatar.following[i].alive){
+            for( var j=0; j<objects.length; j++){
+                toObject.copy(objects[j].pos).add(this.tube.endRoom.holder.position);
+                toObject.sub(this.avatar.following[i].pos);
+                if(toObject.length() < objects[j].size){
+                    objects[j].hitByAvatar( this.avatar.following[i] );
+                    this.avatar.following[i].alive = false;
+                }
+            }
+        }
+    }
+}
+
+GameController.prototype.shotgunAvatarFollowers = function () {
+    var objects = this.tube.endRoom.objects;
+    for( var i=0; i<this.avatar.following.length; i++){
+
+        var o = objects[ Math.round( Math.random() * (objects.length-1) ) ].pos;
+
+        this.avatar.following[i].shootAtTarget( new THREE.Vector3().copy(o).add(this.tube.endRoom.holder.position) );
+    }
+}
 
 GameController.prototype.updateEndRoomObjects = function (delta) {
     var objects = this.tube.endRoom.objects;
@@ -139,13 +178,27 @@ GameController.prototype.updateEndRoomObjects = function (delta) {
             for( var j=0; j<objects.length; j++){
                 if(i != j ){
                     if( objects[i].checkCollision(objects[j]) ){
-                        this.gameOverTimer += 2.0;
-                        if(this.gameOverTimer > 3.0)this.gameOverTimer = 3.0;
 
-                        var p = new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position);
-                        new TWEEN.Tween(this.camTarget).easing(TWEEN.Easing.Quadratic.InOut).to(
-                            {x:p.x , y: p.y, z:p.z},
-                            1.0*1000).start();
+                        for( var i=0; i<5; i++){
+                            //pos, color, wireColor, size, life, speed
+                            var p =new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position);
+                            var particle = new Particle(p, objects[i].color, objects[i].color, 5 + Math.random() * 10, 1.0,300 + Math.random()*100);
+                            this.particles.push(particle);
+                            this.main.state.scene.add( particle.holder );
+                        }
+
+                        if(!objects[i].active || !objects[j].active){
+                            objects[i].active = true;
+                            objects[j].active = true;
+                            this.gameOverTimer += 1.0;
+                            if(this.gameOverTimer > 3.0)this.gameOverTimer = 3.0;
+
+
+                            var p = new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position);
+                            new TWEEN.Tween(this.camTarget).easing(TWEEN.Easing.Quadratic.InOut).to(
+                                {x:p.x , y: p.y, z:p.z},
+                                1.0*1000).start();
+                        }
                     }
                 }
             }
@@ -174,16 +227,25 @@ GameController.prototype.cameraMovement = function (dt, camTarget) {
 
 
     var dir = new THREE.Vector3().copy(this.avatar.vel);
+    //if(this.avatar.lastRoom) dir.add(this.avatar.worldControlVel);
     dir.normalize();
     dir.multiplyScalar(-100);
     var target = new THREE.Vector3().addVectors(camTarget, dir);
+    target.z += 1;
+    if(this.avatar.lastRoom){
+        target = new THREE.Vector3().copy(camTarget);
+        target.y -= 100;
+    }
+
     var toTarget = new THREE.Vector3().subVectors(target, this.camera.position);
-    toTarget.multiplyScalar(  5 * dt );
+
+    var m = this.avatar.lastRoom ? 10 : 5;
+    toTarget.multiplyScalar(  m * dt );
     this.camera.position.add(toTarget);
 
     //dont get too close!
     var toAvatar = new THREE.Vector3().subVectors(this.camera.position, camTarget);
-    var d = 100;
+    var d = this.avatar.lastRoom ? 100 : 100;
 
     if( toAvatar.length() < d ){
         toAvatar.normalize();
@@ -233,7 +295,7 @@ GameController.prototype.updateParticles = function (delta) {
 GameController.prototype.updatePathObjects = function (delta) {
     this.spawnTimer -= delta/1000;
 
-    if(!this.avatar.lastRoom && this.spawnTimer <= 0){
+    if(!this.avatar.lastRoom && this.spawnTimer <= 0 && this.avatar.following.length < 30){
        this.spawnTimer = 0.25 + Math.random();
        if( this.avatar.tubeIndex + 3 < this.tube.path.length ){
            var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone(), this.tube);
