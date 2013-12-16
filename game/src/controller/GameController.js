@@ -1,6 +1,6 @@
 function GameController(main, skybox) {
 
-    Howler.mute();
+    //Howler.mute();
 
     this.main = main;
     this.skybox = skybox;
@@ -178,7 +178,7 @@ GameController.prototype.updateEndRoomObjects = function (delta) {
             for( var j=0; j<objects.length; j++){
                 if(i != j ){
                     if( objects[i].checkCollision(objects[j]) ){
-
+                        /*
                         for( var i=0; i<5; i++){
                             //pos, color, wireColor, size, life, speed
                             var p =new THREE.Vector3().copy(objects[i].pos).add(this.tube.endRoom.holder.position);
@@ -186,7 +186,7 @@ GameController.prototype.updateEndRoomObjects = function (delta) {
                             this.particles.push(particle);
                             this.main.state.scene.add( particle.holder );
                         }
-
+                        */
                         if(!objects[i].active || !objects[j].active){
                             objects[i].active = true;
                             objects[j].active = true;

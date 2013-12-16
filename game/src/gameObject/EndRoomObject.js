@@ -20,8 +20,8 @@ function EndRoomObject( type, pos ) {
     this.color = 0xffffff;
 
     var materials = [
-        new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
-        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+        new THREE.MeshBasicMaterial({ color:0xff0000, wireframe:false, shading: THREE.FlatShading }),
+        new THREE.MeshBasicMaterial( { color: 0xffffff, shading: THREE.FlatShading, wireframe: true, transparent: true } )
     ];
     this.size = 200;
     this.mesh = THREE.SceneUtils.createMultiMaterialObject( geometry, materials );
@@ -44,11 +44,6 @@ EndRoomObject.prototype.hitByAvatar = function (avatar) {
     window.main.state.uiController.addScore(Math.floor( this.toTarget.length() ));
 
     this.vel.add( this.toTarget );
-
-    if(this.vel.length > 1500){
-        this.vel.normalize();
-        this.vel.multiplyScalar(1500);
-    }
 }
 
 EndRoomObject.prototype.checkCollision = function (obj) {
@@ -88,6 +83,11 @@ EndRoomObject.prototype.update = function (delta) {
     this.collided = false;
     var dt = delta/1000;
 
+    if(this.vel.length > 1000){
+        this.vel.normalize();
+        this.vel.multiplyScalar(1000);
+    }
+
     this.pos.x += this.vel.x * dt * this.timeMult;
     this.pos.y += this.vel.y * dt * this.timeMult;
     this.pos.z += this.vel.z * dt * this.timeMult;
@@ -110,4 +110,6 @@ EndRoomObject.prototype.update = function (delta) {
     this.mesh.rotation.x += this.vel.z * dt * this.timeMult * 0.001;
 
     this.mesh.position.copy(this.pos);
+
+
 };

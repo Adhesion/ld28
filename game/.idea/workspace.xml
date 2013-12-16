@@ -29,10 +29,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="GameController.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="176" column="14" selection-start="5615" selection-end="5615" vertical-scroll-proportion="0.34819278">
+            <state line="25" column="28" selection-start="630" selection-end="630" vertical-scroll-proportion="-17.0">
               <folding />
             </state>
           </provider>
@@ -50,7 +50,7 @@
       <file leaf-file-name="Avatar.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="37" selection-start="594" selection-end="594" vertical-scroll-proportion="-10.2">
+            <state line="138" column="0" selection-start="4013" selection-end="4013" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -85,10 +85,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EndRoomObject.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="EndRoomObject.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gameObject/EndRoomObject.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="33" selection-start="610" selection-end="610" vertical-scroll-proportion="0.0">
+            <state line="23" column="54" selection-start="733" selection-end="733" vertical-scroll-proportion="0.46882495">
               <folding />
             </state>
           </provider>
@@ -114,17 +114,17 @@
         <option value="$PROJECT_DIR$/src/gameObject/EndRoom.js" />
         <option value="$PROJECT_DIR$/src/Main.js" />
         <option value="$PROJECT_DIR$/src/gameObject/Tube.js" />
-        <option value="$PROJECT_DIR$/src/gameObject/Avatar.js" />
         <option value="$PROJECT_DIR$/src/gameObject/PathObject.js" />
-        <option value="$PROJECT_DIR$/src/gameObject/EndRoomObject.js" />
         <option value="$PROJECT_DIR$/src/controller/GameController.js" />
+        <option value="$PROJECT_DIR$/src/gameObject/Avatar.js" />
+        <option value="$PROJECT_DIR$/src/gameObject/EndRoomObject.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="2" />
     <option name="width" value="1798" />
-    <option name="height" value="1040" />
+    <option name="height" value="1019" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -240,7 +240,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="0" width="1798" height="1040" extended-state="0" />
+    <frame x="2" y="0" width="1798" height="1019" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -390,7 +390,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="37" selection-start="594" selection-end="594" vertical-scroll-proportion="-10.2">
+        <state line="138" column="0" selection-start="4013" selection-end="4013" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="28" selection-start="630" selection-end="630" vertical-scroll-proportion="-17.0">
           <folding />
         </state>
       </provider>
@@ -404,14 +411,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/EndRoomObject.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="33" selection-start="610" selection-end="610" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="176" column="14" selection-start="5615" selection-end="5615" vertical-scroll-proportion="0.34819278">
+        <state line="23" column="54" selection-start="733" selection-end="733" vertical-scroll-proportion="0.46882495">
           <folding />
         </state>
       </provider>

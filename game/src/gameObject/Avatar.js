@@ -142,6 +142,10 @@ Avatar.prototype.onBeat = function () {
 
         this.beatTick = 0;
     }
+
+    for( var i=0; i<this.following.length; i++){
+        this.following[i].onBeat();
+    }
 }
 
 Avatar.prototype.update = function (delta) {
