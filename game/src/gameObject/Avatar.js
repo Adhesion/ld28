@@ -12,16 +12,17 @@ function Avatar(tube, input, pathObjects) {
 	this.input = input;
 	this.movementAmplitude = 100;
     this.collectRange = 50;
+    this.lastRoom=false;
 
     // TODO Maybe have a debug mode toggle come in here?
 	if( false ) {
-		this.wire.add( circle( 0x0fffff, this.collectRange ) )
-		this.holder.add( circle( 0xffffff, this.movementAmplitude ) )
+		this.wire.add( circle( 0x0fffff, this.collectRange ) );
+		this.holder.add( circle( 0xffffff, this.movementAmplitude ) );
 	}
 
     this.alive = true;
 
-    this.wasdSpeed = 100;
+    this.wasdSpeed = 120;
 	this.speed = 500;
 	this.tube = tube;
 	this.pos.z -= 100;
@@ -103,8 +104,9 @@ Avatar.prototype.update = function (delta) {
 
 
     if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom){
-        this.movementAmplitude = 2000;
-        this.wasdSpeed = 300;
+        this.movementAmplitude = 1000;
+        this.wasdSpeed = 500;
+        this.lastRoom = true;
     }
 
 	var dt = delta/1000;

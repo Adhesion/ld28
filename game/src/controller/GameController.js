@@ -43,12 +43,10 @@ function GameController(main, skybox) {
 GameController.prototype.update = function (delta) {
 
     this.light1.position.copy(this.avatar.pos);
-
     this.avatar.update(delta);
-
     this.updatePathObjects(delta);
 
-    if(this.avatar.tubeIndex > this.tube.path.length - this.tube.lastRoom){
+    if(this.avatar.lastRoom){
         //in last room
         this.main.state.scene.fog.far += delta * 5;
         this.light1.distance += delta * 4;
@@ -57,6 +55,7 @@ GameController.prototype.update = function (delta) {
         if(this.light1.distance > 7000) this.light1.distance = 7000;
 
         this.cameraMovement(delta/1000, this.avatar.worldPosition);
+
     }else{
         this.main.state.scene.fog.far = 2000;
         this.light1.distance = 1000;
@@ -145,7 +144,7 @@ GameController.prototype.updateParticles = function (delta) {
 GameController.prototype.updatePathObjects = function (delta) {
     this.spawnTimer -= delta/1000;
 
-    if(this.spawnTimer <= 0){
+    if(!this.avatar.lastRoom && this.spawnTimer <= 0){
        this.spawnTimer = 0.25 + Math.random();
        if( this.avatar.tubeIndex + 3 < this.tube.path.length ){
            var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone(), this.tube);

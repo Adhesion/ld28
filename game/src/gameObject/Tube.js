@@ -85,7 +85,7 @@ Tube.prototype.makeObjects = function () {
         new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
     ];
 
-    var endWall = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(4000,4000,200,1,1,1), materials );
+    var endWall = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(4000,2000,200,1,1,1), materials );
     endWall.position.x = this.path[this.path.length-2].x;
     endWall.position.y = this.path[this.path.length-2].y;
     endWall.position.z = this.path[this.path.length-2].z;
@@ -148,18 +148,20 @@ Tube.prototype.buildMesh = function () {
     for( var i=0; i<this.path.length; i++ ){
 
         var w = 150 + Math.random() * 50;
+        var h = w;
 
         if( i >= this.path.length -  this.lastRoom){
             var roomi = i+ this.lastRoom - this.path.length;
             //boss area, make it really big!
-            w = 150 + Math.sin(Math.PI*0.5 * (roomi/( this.lastRoom-1))) * 2000;
+            w = 2000;
+            h = 1000;
         }
         if( i == this.path.length-1) w = 0;
 
-        var v0 = new THREE.Vector3( -w, 0, -w);
-        var v1 = new THREE.Vector3( w, 0, -w);
-        var v2 = new THREE.Vector3( -w, 0, w);
-        var v3 = new THREE.Vector3( w, 0, w);
+        var v0 = new THREE.Vector3( -w, 0, -h);
+        var v1 = new THREE.Vector3( w, 0, -h);
+        var v2 = new THREE.Vector3( -w, 0, h);
+        var v3 = new THREE.Vector3( w, 0, h);
 
         if( i > 0 ){
             // rotate segment.

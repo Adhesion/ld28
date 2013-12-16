@@ -32,7 +32,7 @@
       <file leaf-file-name="Tube.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="0" selection-start="3387" selection-end="3387" vertical-scroll-proportion="0.0">
+            <state line="0" column="17" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -47,10 +47,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Avatar.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Avatar.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="53" selection-start="5476" selection-end="5476" vertical-scroll-proportion="0.80248445">
+            <state line="108" column="7" selection-start="2863" selection-end="2877" vertical-scroll-proportion="-12.44">
               <folding />
             </state>
           </provider>
@@ -65,10 +65,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameController.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="0" selection-start="1807" selection-end="1807" vertical-scroll-proportion="-38.08">
+            <state line="146" column="32" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.43589744">
               <folding />
             </state>
           </provider>
@@ -102,10 +102,10 @@
         <option value="$PROJECT_DIR$/src/gameObject/PathObject.js" />
         <option value="$PROJECT_DIR$/src/gameObject/GameObject.js" />
         <option value="$PROJECT_DIR$/lib/Three.js" />
-        <option value="$PROJECT_DIR$/src/gameObject/Avatar.js" />
         <option value="$PROJECT_DIR$/src/Main.js" />
-        <option value="$PROJECT_DIR$/src/controller/GameController.js" />
         <option value="$PROJECT_DIR$/src/gameObject/Tube.js" />
+        <option value="$PROJECT_DIR$/src/gameObject/Avatar.js" />
+        <option value="$PROJECT_DIR$/src/controller/GameController.js" />
       </list>
     </option>
   </component>
@@ -356,13 +356,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Three.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6242" column="0" selection-start="118280" selection-end="118280" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Particle.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="39" column="26" selection-start="1166" selection-end="1169" vertical-scroll-proportion="0.0">
@@ -370,23 +363,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
+    <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="0" selection-start="1807" selection-end="1807" vertical-scroll-proportion="-38.08">
+        <state line="108" column="7" selection-start="2863" selection-end="2877" vertical-scroll-proportion="-12.44">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6242" column="0" selection-start="118280" selection-end="118280" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Tube.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="0" selection-start="3387" selection-end="3387" vertical-scroll-proportion="0.0">
+        <state line="0" column="17" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
+    <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="53" selection-start="5476" selection-end="5476" vertical-scroll-proportion="0.80248445">
+        <state line="146" column="32" selection-start="4066" selection-end="4066" vertical-scroll-proportion="0.43589744">
           <folding />
         </state>
       </provider>
