@@ -95,7 +95,9 @@ GameController.prototype.update = function (delta) {
                 var particle = new Particle(p, 0xff0000, 0xff0000, 5 + Math.random() * 10, 2.0,400);
                 this.particles.push(particle);
                 this.main.state.scene.add( particle.holder );
+
             }
+            this.shake += 1.0;
             this.main.state.scene.remove( this.avatar.holder );
             this.isGameOver = true;
             if(this.avatar.lastRoom) this.main.fadeToSong("ld28-boss");
@@ -110,15 +112,17 @@ GameController.prototype.update = function (delta) {
 GameController.prototype.cameraMovement = function (dt, camTarget) {
     this.sway += dt * 0.5;
     if( this.sway > Math.PI * 2) this.sway -= Math.PI*2;
-    var x = Math.cos(this.sway) * 10;
-    var z = Math.sin(this.sway) * 10;
+    var x = 0;//Math.cos(this.sway) * 10;
+    var z = 0;//Math.sin(this.sway) * 10;
 
     if(this.shake > 0){
-        x += Math.random() * this.shake * 4 - this.shake * 2;
-        z += Math.random() * this.shake * 4 - this.shake * 2;
+        x += Math.random() * this.shake * 6 - this.shake * 3;
+        z += Math.random() * this.shake * 6 - this.shake * 3;
     }
 
     this.shake -=dt;
+    if(this.shake < 0)this.shake =0;
+    if(this.shake > 2)this.shake =2;
 
     // TODO It would be nice to have some blending between focus transitions...
 
@@ -141,6 +145,9 @@ GameController.prototype.cameraMovement = function (dt, camTarget) {
         this.camera.position.copy( camTarget );
         this.camera.position.add(toAvatar);
     }
+
+    this.camera.position.x += x;
+    this.camera.position.z += z;
 
     //var lookAt = new THREE.Vector3().copy(this.avatar.pos);
     //lookAt.x += this.avatar.wire.position.x * 0.2;

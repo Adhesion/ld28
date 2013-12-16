@@ -41,7 +41,7 @@
       <file leaf-file-name="Avatar.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="0" selection-start="3329" selection-end="3329" vertical-scroll-proportion="-25.08">
+            <state line="135" column="0" selection-start="3727" selection-end="3727" vertical-scroll-proportion="-25.08">
               <folding />
             </state>
           </provider>
@@ -68,7 +68,7 @@
       <file leaf-file-name="GameController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="0" selection-start="1516" selection-end="1516" vertical-scroll-proportion="0.40963855">
+            <state line="124" column="35" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.66024095">
               <folding />
             </state>
           </provider>
@@ -355,7 +355,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gameObject/Avatar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="0" selection-start="3329" selection-end="3329" vertical-scroll-proportion="-25.08">
+        <state line="135" column="0" selection-start="3727" selection-end="3727" vertical-scroll-proportion="-25.08">
           <folding />
         </state>
       </provider>
@@ -399,7 +399,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/GameController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="0" selection-start="1516" selection-end="1516" vertical-scroll-proportion="0.40963855">
+        <state line="124" column="35" selection-start="3696" selection-end="3696" vertical-scroll-proportion="0.66024095">
           <folding />
         </state>
       </provider>
