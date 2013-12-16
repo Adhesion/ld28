@@ -127,7 +127,7 @@ Main.prototype.getAssets = function() {
 				"sound/" + (prefix || "") + base + ".ogg"
 			],
 			type: 'audio',
-            buffer: false,
+            buffer: window.main.settings.nowebaudio,
 			callback: function( audio ) {
 				//if( !prefix ) {
 				//	window.hitSounds = window.hitSounds || [];
@@ -262,7 +262,7 @@ Main.prototype.fadeToSong = function(toSong) {
     // Fade in next song at old song pos
     var curSong= this.loader.get("sound/" + this.currentSong);
     var nextSong= this.loader.get("sound/" + toSong);
-    curSong.fade( curSong.origVolume, 0.0, 100, function() { curSong.stop(); } );
+    curSong.fade( curSong.origVolume, 0.0, 250, function() { curSong.stop(); } );
     nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
     nextSong.pos( curSong.pos() % nextSong._duration );
     this.currentSong= toSong;
