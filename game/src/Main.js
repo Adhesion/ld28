@@ -114,8 +114,7 @@ function Main() {
 	// start the shit
 	this.lastFrame = 0;
 	this.resize();
-	this.update();
-
+	requestAnimFrame( this.callback );
 }
 
 Main.prototype.getAssets = function() {
@@ -813,8 +812,7 @@ function LoadingController( game, camera, scene ) {
             size: 20, height: 4, curveSegments: 4,
             font: "helvetiker", style: "normal"
         });
-    //textGeom
-    this.scoreMesh = new THREE.Mesh(new THREE.CubeGeometry(100,100,100,1,1,1), tmat );
+    this.scoreMesh = new THREE.Mesh(textGeom, tmat );
     textGeom.computeBoundingBox();
     var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
     this.scoreMesh.position.set( -0.5 * textWidth, -40, 120 );
