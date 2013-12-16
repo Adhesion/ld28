@@ -266,6 +266,12 @@ Main.prototype.fadeToSong = function(toSong) {
     nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
     nextSong.pos( curSong.pos() % nextSong._duration );
     this.currentSong= toSong;
+
+    // Reset beat detection if no web audio since songs will always restart from beginning
+    if( !curSong._webAudio ) {
+        this.lastBeat= 0.0;
+        this.onBeat();
+    }
 };
 
 Main.prototype.onBeat = function() {
