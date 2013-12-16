@@ -67,8 +67,8 @@ Tube.prototype.makeObjects = function () {
                     new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
                 ];
 
-                var h = 40 + Math.random() * 40;
-                var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,60,h,1,1,1), materials );
+                var h = 20 + Math.random() * 30;
+                var obj = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(700,20,h,1,1,1), materials );
                 obj.position.x = this.path[i].x + Math.random()* 200 - 100;
                 obj.position.y = this.path[i].y;
                 obj.position.z = this.path[i].z + Math.random()* 200 - 100;
@@ -82,7 +82,7 @@ Tube.prototype.makeObjects = function () {
 
 
     this.endRoom = new EndRoom();
-    this.endRoom.holder.position.copy( this.path[this.path.length - this.lastRoom] );
+    this.endRoom.holder.position.copy( this.path[this.path.length - this.lastRoom + 1] );
     this.holder.add(this.endRoom.holder);
     this.objects.push(this.endRoom.holder);
 }

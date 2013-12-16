@@ -270,6 +270,10 @@ Main.prototype.fadeToSong = function(toSong) {
 
 Main.prototype.onBeat = function() {
     // BEAT IT, JUST BEAT IT
+
+    for( var i=0; i<this.controllers.length; i++){
+        this.controllers[i].onBeat();
+    }
 }
 
 function GameState() {
@@ -470,6 +474,11 @@ function IntroController( game, camera, scene ) {
 	scene.add( this.glassesSprite );
 }
 
+IntroController.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+    console.log("BEAT IT BABY")
+}
+
 IntroController.prototype.resize = function( width, height ) {
 	this.cx = width / 2;
 	this.cy = height / 2;
@@ -646,7 +655,7 @@ function SplashController( game, camera, scene, isGameover ) {
 
     this.counter = 0;
 
-    var text = window.main.loader.get("assets/models/tessitron_text.js");
+    //var text = window.main.loader.get("assets/models/tessitron_text.js");
     var logo = window.main.loader.get("assets/models/emblem.js");
     var tmat = new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading  } );
     var lmat = new THREE.MeshPhongMaterial( { color: 0xf2e85c, shading: THREE.FlatShading  } );
@@ -655,9 +664,17 @@ function SplashController( game, camera, scene, isGameover ) {
     this.lm.rotation. x = Math.PI / 2;
 	this.lm.scale.set( 10, 10, 10 );
 
-    this.tm = new THREE.Mesh(text, tmat);
-    this.tm.position.x = -65;
-    this.tm.scale = new THREE.Vector3(2,2,2);
+    var scoreText = "VELOCITRON";
+    var textGeom = new THREE.TextGeometry( scoreText,
+        {
+            size: 15, height: 4, curveSegments: 4,
+            font: "helvetiker", style: "normal"
+        });
+
+    this.tm = new THREE.Mesh(textGeom, tmat);
+    this.tm.position.x = -63;
+    this.tm.position.y = -10;
+    this.tm.scale = new THREE.Vector3(1,1,1);
 
     this.textMesh = new THREE.Object3D();
     this.textMesh.add(this.tm);
@@ -736,6 +753,14 @@ function SplashController( game, camera, scene, isGameover ) {
 
     this.resize( window.innerWidth, window.innerHeight );
 }
+
+SplashController.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+    console.log("BEAT IT BABY");
+    this.logoMesh.scale.set(1.2,1.2,1.2);
+    new TWEEN.Tween(this.logoMesh.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 1.0*1000).start();
+}
+
 
 SplashController.prototype.resize = function( width, height ) {
     this.cx = width / 2;
@@ -870,6 +895,11 @@ function LoadingController( game, camera, scene ) {
     scene.add( this.light4 );
 
     this.resize( window.innerWidth, window.innerHeight );
+}
+
+LoadingController.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+    console.log("BEAT IT BABY")
 }
 
 LoadingController.prototype.resize = function( width, height ) {

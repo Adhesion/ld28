@@ -61,6 +61,11 @@ function UIController(main) {
     this.resize(window.innerWidth, window.innerHeight);
 }
 
+UIController.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+    //console.log("BEAT IT BABY")
+}
+
 UIController.prototype.updateCanvas = function(){
     this.canvas.width = 256;
     this.canvas.height = 64;

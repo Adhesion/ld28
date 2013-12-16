@@ -43,6 +43,16 @@ function GameController(main, skybox) {
     this.main.fadeToSong("ld28-game");
 }
 
+GameController.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+    console.log("BEAT IT BABY");
+
+    for( var i=0; i<this.pathObjects.length; i++){
+        this.pathObjects[i].holder.scale.set(1.8,1.8,1.8);
+        new TWEEN.Tween(this.pathObjects[i].holder.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
+    }
+}
+
 GameController.prototype.update = function (delta) {
 
     this.light1.position.copy(this.avatar.pos);
