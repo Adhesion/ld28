@@ -54,9 +54,9 @@ PathObject.prototype.update = function (delta) {
         this.checkWallCollision();
 	}
 
-   this.rotation.x += dt*1;
-   this.rotation.y += dt*1;
-   this.rotation.z += dt*1;
+   this.rotation.x += dt*5;
+   this.rotation.y += dt*5;
+   this.rotation.z += dt*5;
 
    this.wire.rotation = this.rotation;
 

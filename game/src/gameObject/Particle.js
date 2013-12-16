@@ -4,29 +4,33 @@ function Particle(pos, color, wireColor, size, life, speed) {
 		color: color,
 		wireColor: wireColor
 	});
+
+    this.alive = true;
     this.life = this.maxLife = life;
     this.pos = pos;
     this.rotation = new THREE.Vector3(Math.random() * 4 - 2, Math.random() * 4 - 2, Math.random() * 4 - 2);
 
-    this.update(0);
+    //this.update(0);
     this.vel.x = Math.random() * speed - speed * 0.5;
     this.vel.y = Math.random() * speed - speed * 0.5;
     this.vel.z = Math.random() * speed - speed * 0.5;
 
-    var v = this.vel.clone();
-    v.setLength(this.size)
+    this.rotation = new THREE.Vector3();
 
-    this.vel.addVectors(this.vel, v);
+    this.holder.rotation.x += Math.random() * 10;
+    this.holder.rotation.y += Math.random() * 10;
+    this.holder.rotation.z += Math.random() * 10;
 
-    this.solidMat.blending = THREE.AdditiveAlphaBlending;
-    this.wireMat.blending = THREE.AdditiveAlphaBlending;
+    //this.solidMat.blending = THREE.AdditiveAlphaBlending;
+   // this.wireMat.blending = THREE.AdditiveAlphaBlending;
 }
 
 Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
-Particle.prototype.update = function (dt) {
-    GameObject.prototype.update.call(this, dt);
+Particle.prototype.update = function (delta) {
+    GameObject.prototype.update.call(this, delta);
+    var dt = delta/1000;
 
     this.life-=dt;
     if (this.life <= 0) {
@@ -34,17 +38,24 @@ Particle.prototype.update = function (dt) {
         return;
     }
 
-    this.solidMat.opacity = (this.life * 2) / this.maxLife;
+    //this.solidMat.opacity = (this.life * 2) / this.maxLife;
     this.wireMat.opacity = (this.life * 2) / this.maxLife;
 
     this.vel.y -= dt * 500;
 
-    this.rotation.x += 0.1;
-    this.rotation.y += 0.1;
-    this.rotation.z += 0.1;
+    this.rotation.x += dt;
+    this.rotation.y += dt;
+    this.rotation.z += dt;
+
+   this.holder.rotation.x += dt* 5;
+   this.holder.rotation.y += dt* 5;
+   this.holder.rotation.z += dt* 5;
+
+    //console.log("PARTICLE " + this.life);
 };
 
 Particle.prototype.buildMesh = function (size) {
+
     var geometry = new THREE.Geometry();
 
     //front
@@ -57,4 +68,6 @@ Particle.prototype.buildMesh = function (size) {
     geometry.computeBoundingSphere();
 
     return geometry;
+
+
 };

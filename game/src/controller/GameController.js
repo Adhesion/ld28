@@ -45,12 +45,13 @@ function GameController(main, skybox) {
 
 GameController.prototype.onBeat = function() {
     // BEAT IT, JUST BEAT IT
-    console.log("BEAT IT BABY");
+    //console.log("BEAT IT BABY");
 
     for( var i=0; i<this.pathObjects.length; i++){
         this.pathObjects[i].holder.scale.set(1.8,1.8,1.8);
         new TWEEN.Tween(this.pathObjects[i].holder.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 0.5*1000).start();
     }
+
 }
 
 GameController.prototype.update = function (delta) {
@@ -58,12 +59,14 @@ GameController.prototype.update = function (delta) {
     this.light1.position.copy(this.avatar.pos);
     this.avatar.update(delta);
     this.updatePathObjects(delta);
+    this.updateParticles(delta);
+
 
     if(this.avatar.lastRoom){
         //in last room
         if(!this.isLastRoom){
             this.isLastRoom = true;
-            this.main.fadeToSong("ld28-boss");
+            this.main.fadeToSong("ld28-open");
         }
 
         this.main.state.scene.fog.far += delta * 5;
@@ -85,8 +88,17 @@ GameController.prototype.update = function (delta) {
 
     if(!this.avatar.alive){
         if(!this.isGameOver){
+            for( var i=0; i<30; i++){
+                //pos, color, wireColor, size, life, speed
+                var p =new THREE.Vector3().copy(this.avatar.worldPosition);
+                console.log(p);
+                var particle = new Particle(p, 0xff0000, 0xff0000, 5 + Math.random() * 10, 2.0,400);
+                this.particles.push(particle);
+                this.main.state.scene.add( particle.holder );
+            }
+            this.main.state.scene.remove( this.avatar.holder );
             this.isGameOver = true;
-            if(this.avatar.lastRoom) this.main.fadeToSong("ld28-open");
+            if(this.avatar.lastRoom) this.main.fadeToSong("ld28-boss");
         }
         this.gameOverTimer-=delta/1000;
         if(this.gameOverTimer < 0){
