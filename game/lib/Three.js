@@ -6233,7 +6233,7 @@ THREE.EventDispatcher.prototype = {
  * @author mikael emtinger / http://gomo.se/
  * @author alteredq / http://alteredqualia.com/
  * @author WestLangley / http://github.com/WestLangley
- */
+*/
 
 THREE.Object3D = function () {
 
