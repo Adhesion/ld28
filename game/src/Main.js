@@ -749,6 +749,7 @@ function SplashController( game, camera, scene, isGameover ) {
         }
     };
 
+    this.beatBlink = false;
     this.blink = 0;
 
     this.resize( window.innerWidth, window.innerHeight );
@@ -756,6 +757,15 @@ function SplashController( game, camera, scene, isGameover ) {
 
 SplashController.prototype.onBeat = function() {
     // BEAT IT, JUST BEAT IT
+
+    this.beatBlink = true;
+
+    if(this.blink != 0){
+        this.blink = 0;
+    }else{
+        this.blink = 1;
+    }
+
     console.log("BEAT IT BABY");
     this.logoMesh.scale.set(1.2,1.2,1.2);
     new TWEEN.Tween(this.logoMesh.scale).easing(TWEEN.Easing.Quadratic.Out).to({x: 1, y: 1, z:1}, 1.0*1000).start();
@@ -800,9 +810,10 @@ SplashController.prototype.update = function( dt ) {
         this.stars[i].update(dt/1000);
     }
 
-
-    this.blink += dt/1000;
-    if(this.blink > 1 ) this.blink = 0;
+    if(!this.beatBlink){
+        this.blink += dt/1000;
+        if(this.blink > 1 ) this.blink = 0;
+    }
 
 }
 
