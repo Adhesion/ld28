@@ -87,8 +87,12 @@ Avatar.prototype.checkPathObjects = function(delta) {
 			e.wireMat.opacity = .8;
 			self.speed += 20;
 
-            // pickup sound
-            window.main.loader.get("sound/pickup" + e.soundType).play();
+            // pickup sound - find position of pickup in cam coords for THREE D SOUNDS WOW
+            var camPos= new THREE.Vector3;
+            camPos.copy( e.pos );
+            camPos.applyProjection( window.main.state.camera.matrixWorldInverse );
+            // div by 100 because cam coords are roughly that range, pan should be -1 to 1ish or else it'll get too quiet i think?
+            window.main.loader.get("sound/pickup" + e.soundType).pos3d(camPos.x/100.0, camPos.y/100.0, -0.5).play();
 		}
 	});
 
