@@ -8,7 +8,7 @@ function Tube() {
 	});
 */
 
-    this.lastRoom = 30;
+    this.lastRoom = 10;
 
     var materials = [
         new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors, transparent: true } ),
@@ -50,6 +50,8 @@ Tube.prototype.update = function (dt) {
 
 Tube.prototype.makeObjects = function () {
 
+    var materials;
+
     for( var i=0; i<this.path.length; i++ ){
 
         if( i >= this.path.length -  this.lastRoom){
@@ -61,7 +63,7 @@ Tube.prototype.makeObjects = function () {
                 var progress = i/this.path.length;
                 var c = new THREE.Color( 0xf2e85c );
                 c.setHSL((1-progress)*0.2 + 0.0,1,0.4);
-                var materials = [
+                materials = [
                     new THREE.MeshBasicMaterial({ color:c.getHex(), wireframe:false, shading: THREE.FlatShading }),
                     new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
                 ];
@@ -78,6 +80,20 @@ Tube.prototype.makeObjects = function () {
         }
     }
 
+    materials = [
+        new THREE.MeshBasicMaterial({ color:0xffffff, wireframe:false, shading: THREE.FlatShading }),
+        new THREE.MeshBasicMaterial( { color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true } )
+    ];
+
+    var endWall = THREE.SceneUtils.createMultiMaterialObject( new THREE.CubeGeometry(4000,2000,200,1,1,1), materials );
+    endWall.position.x = this.path[this.path.length-2].x;
+    endWall.position.y = this.path[this.path.length-2].y;
+    endWall.position.z = this.path[this.path.length-2].z;
+    endWall.up = new THREE.Vector3(0,0,1);
+    endWall.lookAt(this.path[this.path.length-3]);
+    this.holder.add(endWall);
+    this.objects.push(endWall);
+
 }
 
 Tube.prototype.makePath = function () {
@@ -91,7 +107,7 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    var segments = 100 + this.lastRoom;
+    var segments = 5 + this.lastRoom;
 
     for( var i=0; i< segments; i++){
 
@@ -106,6 +122,10 @@ Tube.prototype.makePath = function () {
                 v.y = d;
                 v.z = Math.random() * d - d*0.5;
             }
+        }else{
+            x = 0;
+            z = 0;
+            v.y = 1000;
         }
 
         x += v.x;
@@ -128,18 +148,20 @@ Tube.prototype.buildMesh = function () {
     for( var i=0; i<this.path.length; i++ ){
 
         var w = 150 + Math.random() * 50;
+        var h = w;
 
         if( i >= this.path.length -  this.lastRoom){
             var roomi = i+ this.lastRoom - this.path.length;
             //boss area, make it really big!
-            w = 150 + Math.sin(Math.PI * (roomi/( this.lastRoom-1))) * 4000;
+            w = 2000;
+            h = 1000;
         }
         if( i == this.path.length-1) w = 0;
 
-        var v0 = new THREE.Vector3( -w, 0, -w);
-        var v1 = new THREE.Vector3( w, 0, -w);
-        var v2 = new THREE.Vector3( -w, 0, w);
-        var v3 = new THREE.Vector3( w, 0, w);
+        var v0 = new THREE.Vector3( -w, 0, -h);
+        var v1 = new THREE.Vector3( w, 0, -h);
+        var v2 = new THREE.Vector3( -w, 0, h);
+        var v3 = new THREE.Vector3( w, 0, h);
 
         if( i > 0 ){
             // rotate segment.
@@ -149,7 +171,7 @@ Tube.prototype.buildMesh = function () {
             var m = new THREE.Matrix4();
             m.makeRotationZ( Math.atan2(b.y - a.y,b.x - a.x) - Math.PI * 0.5);
             m.makeRotationX( Math.atan2(b.y - a.y,b.z - a.z) - Math.PI * 0.5);
-            m.makeRotationY( Math.random() * Math.PI * 0.25 );
+            if( i < this.path.length -  this.lastRoom) m.makeRotationY( Math.random() * Math.PI * 0.25 );
 
             v0.applyMatrix4(m);
             v1.applyMatrix4(m);
@@ -189,7 +211,7 @@ Tube.prototype.buildMesh = function () {
         }
     }
 
-    geometry.computeFaceNormals();
+    //geometry.computeFaceNormals();
     geometry.computeBoundingSphere();
 
     return geometry;

@@ -20,6 +20,8 @@ function GameController(main, skybox) {
 
     this.spawnTimer = 0;
 
+    this.gameOverTimer = 2;
+
     this.main.state.scene.fog = new THREE.Fog( 0x2e2e2e, 1, 2000 );
 
     this.sway = 0;
@@ -28,10 +30,6 @@ function GameController(main, skybox) {
     this.light1= new THREE.PointLight( 0xdbd14c, 1, 3000 );
     this.light1.position.set( 0, 0, 0 );
     this.main.state.scene.add( this.light1 );
-
-
-    //this.camHolder.add( this.light1 );
-    //this.camHolder.add( this.skybox );
 
     this.tube = new Tube();
     this.main.state.scene.add( this.tube.holder );
@@ -45,20 +43,19 @@ function GameController(main, skybox) {
 GameController.prototype.update = function (delta) {
 
     this.light1.position.copy(this.avatar.pos);
-
     this.avatar.update(delta);
-
     this.updatePathObjects(delta);
 
-    if(this.avatar.tubeIndex > this.tube.path.length - this.tube.lastRoom){
+    if(this.avatar.lastRoom){
         //in last room
         this.main.state.scene.fog.far += delta * 5;
         this.light1.distance += delta * 4;
 
-        if(this.main.state.scene.fog.far > 12000) this.main.state.scene.fog.far = 12000;
-        if(this.light1.distance > 10000) this.light1.distance = 10000;
+        if(this.main.state.scene.fog.far > 8000) this.main.state.scene.fog.far = 8000;
+        if(this.light1.distance > 7000) this.light1.distance = 7000;
 
         this.cameraMovement(delta/1000, this.avatar.worldPosition);
+
     }else{
         this.main.state.scene.fog.far = 2000;
         this.light1.distance = 1000;
@@ -68,13 +65,10 @@ GameController.prototype.update = function (delta) {
 
 
     if(!this.avatar.alive){
-		if( !this.deathticker ) {
-			this.deathticker = 0;
-		}
-		this.deathticker += delta;
-		if( this.deathticker > 5000 ){
-			this.gameOver();
-		}
+        this.gameOverTimer-=delta/1000;
+        if(this.gameOverTimer < 0){
+            this.gameOver();
+        }
     }
 };
 
@@ -131,11 +125,26 @@ GameController.prototype.gameOver = function () {
     });
 };
 
+GameController.prototype.updateParticles = function (delta) {
+
+    var remove = [];
+    for( var i=0; i<this.particles.length; i++){
+        this.particles[i].update(delta);
+        if(!this.particles[i].alive){
+            remove.push(this.particles[i]);
+        }
+    }
+
+    for( var i=0; i<remove.length; i++){
+        this.main.state.scene.remove( remove[i].holder );
+        this.particles.splice( this.particles.indexOf(remove[i]), 1);
+    }
+}
 
 GameController.prototype.updatePathObjects = function (delta) {
     this.spawnTimer -= delta/1000;
 
-    if(this.spawnTimer <= 0){
+    if(!this.avatar.lastRoom && this.spawnTimer <= 0){
        this.spawnTimer = 0.25 + Math.random();
        if( this.avatar.tubeIndex + 3 < this.tube.path.length ){
            var pathObject = new PathObject( this.tube.path[this.avatar.tubeIndex + 3].clone(), this.tube);
@@ -151,13 +160,6 @@ GameController.prototype.updatePathObjects = function (delta) {
         this.pathObjects[i].update(delta);
         if(!this.pathObjects[i].alive){
             remove.push(this.pathObjects[i]);
-        }else if( this.pathObjects[i].target!= null ){
-            for( var j=0; j<this.pathObjects.length; j++){
-                if(i!=j && this.pathObjects[j].target!= null){
-                    this.pathObjects[i].avoid(this.pathObjects[j]);
-                    this.pathObjects[j].avoid(this.pathObjects[i]);
-                }
-            }
         }
     }
 
