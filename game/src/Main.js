@@ -114,8 +114,7 @@ function Main() {
 	// start the shit
 	this.lastFrame = 0;
 	this.resize();
-	this.update();
-
+	requestAnimFrame( this.callback );
 }
 
 Main.prototype.getAssets = function() {
