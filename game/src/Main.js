@@ -560,6 +560,8 @@ GameOver.prototype.onStart = function( game ) {
     game.controllers.push( this.controller );
 
     //game.loader.get("sound/gameover-win").play();
+
+    game.fadeToSong("ld28-intro");
 };
 
 GameOver.prototype.resize = function( width, height ) {
@@ -607,7 +609,7 @@ Splash.prototype.onStart = function( game ) {
 
     //game.loader.get("sound/intro").loop(true);
     //game.loader.get("sound/intro").play();
-
+    game.fadeToSong("ld28-intro");
 };
 
 Splash.prototype.resize = function( width, height ) {
@@ -886,8 +888,8 @@ LoadingController.prototype.update = function( dt ) {
     var assets = this.game.getAssets();
     if( this.game.loader.done( assets ) ) {
         //TODO: change this back to Intro for final build.
-        //this.game.setState( new Intro() );
-        this.game.setState( new GameState() );
+        this.game.setState( new Intro() );
+        //this.game.setState( new GameState() );
     }
 
     this.counter += dt;

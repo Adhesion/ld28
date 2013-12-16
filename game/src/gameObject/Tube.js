@@ -56,9 +56,8 @@ Tube.prototype.makeObjects = function () {
 
         if( i >= this.path.length -  this.lastRoom){
 
-            x=z=0;
         }else{
-            if(Math.random() > 0.7){
+            if(Math.random() > 0.6){
 
                 var progress = i/this.path.length;
                 var c = new THREE.Color( 0xf2e85c );
@@ -99,7 +98,7 @@ Tube.prototype.makePath = function () {
     var v = new THREE.Vector3( 0, d ,0 );
     this.tubeLength = new THREE.Vector3();
 
-    var segments = 5 + this.lastRoom;
+    var segments = 100 + this.lastRoom;
 
     for( var i=0; i< segments; i++){
 
@@ -115,8 +114,6 @@ Tube.prototype.makePath = function () {
                 v.z = Math.random() * d - d*0.5;
             }
         }else{
-            x = 0;
-            z = 0;
             v.y = 1000;
         }
 

@@ -130,25 +130,6 @@ Avatar.prototype.update = function (delta) {
 		this.controlVel.x += this.wasdSpeed  * dt;
 	}
 
-    // TODO temp shit, remove this
-    if( this.input.z ) {
-        window.main.fadeToSong("ld28-intro");
-    }
-    if( this.input.x ) {
-        window.main.fadeToSong("ld28-game");
-    }
-    if( this.input.c ) {
-        window.main.fadeToSong("ld28-open");
-    }
-    if( this.input.v ) {
-        window.main.fadeToSong("ld28-boss");
-    }
-    if( this.input.b ) {
-        window.main.loader.get("sound/bossdeath").play();
-    }
-    if( this.input.n ) {
-        window.main.loader.get("sound/death").play();
-    }
 
 	if( this.controlVel.length() > this.wasdSpeed) {
 		this.controlVel.normalize().multiplyScalar(this.wasdSpeed);
@@ -201,6 +182,8 @@ Avatar.prototype.update = function (delta) {
 };
 
 Avatar.prototype.checkWorldCollision = function () {
+    if(!this.alive) return;
+
     //avatar vs pillars.
     var origin = new THREE.Vector3().copy(this.worldPosition),
         direction = new THREE.Vector3().copy(this.vel),
@@ -213,8 +196,11 @@ Avatar.prototype.checkWorldCollision = function () {
         //console.log('Ray collides with mesh. Distance :' + collisionResults[0].distance);
         for( var i=0; i<collisionResults.length; i++){
             if( collisionResults[i].distance < 20){
+
+                window.main.loader.get("sound/death").play();
                 this.alive = false;
                 this.speed = 0;
+
                 return;
             }
         }

@@ -20,6 +20,8 @@ function GameController(main, skybox) {
 
     this.spawnTimer = 0;
 
+    this.isLastRoom = false;
+    this.isGameOver = false;
     this.gameOverTimer = 2;
 
     this.main.state.scene.fog = new THREE.Fog( 0x2e2e2e, 1, 2000 );
@@ -38,6 +40,7 @@ function GameController(main, skybox) {
 
     window.game_win = false;
 
+    this.main.fadeToSong("ld28-game");
 }
 
 GameController.prototype.update = function (delta) {
@@ -48,6 +51,11 @@ GameController.prototype.update = function (delta) {
 
     if(this.avatar.lastRoom){
         //in last room
+        if(!this.isLastRoom){
+            this.isLastRoom = true;
+            this.main.fadeToSong("ld28-boss");
+        }
+
         this.main.state.scene.fog.far += delta * 5;
         this.light1.distance += delta * 4;
 
@@ -64,7 +72,12 @@ GameController.prototype.update = function (delta) {
     }
 
 
+
     if(!this.avatar.alive){
+        if(!this.isGameOver){
+            this.isGameOver = true;
+            if(this.avatar.lastRoom) this.main.fadeToSong("ld28-open");
+        }
         this.gameOverTimer-=delta/1000;
         if(this.gameOverTimer < 0){
             this.gameOver();
