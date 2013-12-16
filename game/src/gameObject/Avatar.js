@@ -210,7 +210,7 @@ Avatar.prototype.checkWorldCollision = function () {
         for( var i=0; i<collisionResults.length; i++){
             if( collisionResults[i].distance < 20){
                 this.alive = false;
-                //this.speed = 0;
+                this.speed = 0;
                 return;
             }
         }

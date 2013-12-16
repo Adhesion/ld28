@@ -861,8 +861,8 @@ LoadingController.prototype.update = function( dt ) {
     var assets = this.game.getAssets();
     if( this.game.loader.done( assets ) ) {
         //TODO: change this back to Intro for final build.
-        this.game.setState( new Intro() );
-        //this.game.setState( new GameState() );
+        //this.game.setState( new Intro() );
+        this.game.setState( new GameState() );
     }
 
     this.counter += dt;
