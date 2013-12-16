@@ -218,6 +218,29 @@ Main.prototype.update = function (newFrame) {
 		this.controllers[controller].update( delta );
 	}
 
+    //beat checking
+    if( this.currentSong ) {
+        if( !this.lastBeat && this.lastBeat !== 0.0 ) {
+            // If this is the first time, assume our music is starting on beat right now
+            this.lastBeat= 0.0;
+            this.onBeat();
+        }
+        else {
+            var beatLength= 0.43478260869565217391304347826087; //magic math
+            var nextBeat= this.lastBeat + beatLength;
+            var curSongHowl= this.loader.get("sound/" + this.currentSong);
+
+            // Wrap around if necessary
+            if( nextBeat >= curSongHowl._duration )
+                nextBeat= 0.0;
+
+            if( (curSongHowl.pos() % curSongHowl._duration) > nextBeat ) {
+                this.onBeat();
+                this.lastBeat= nextBeat;
+            }
+        }
+    }
+
 	this.state.render( this );
 
 	// and then request another frame draw
@@ -244,6 +267,10 @@ Main.prototype.fadeToSong = function(toSong) {
     nextSong.pos( curSong.pos() % nextSong._duration );
     this.currentSong= toSong;
 };
+
+Main.prototype.onBeat = function() {
+    // BEAT IT, JUST BEAT IT
+}
 
 function GameState() {
 
