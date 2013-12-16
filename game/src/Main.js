@@ -145,7 +145,7 @@ Main.prototype.getAssets = function() {
         getSound( "ld28-intro", "", 0.6 ),
         getSound( "ld28-boss", "", 0.5 ),
         getSound( "bossdeath", "", 0.7 ),
-        getSound( "death", "", 0.6 ),
+        getSound( "death", "", 0.75 ),
         getSound( "1", "hit", 0.9 ),
         getSound( "2", "hit", 0.9 ),
         getSound( "3", "hit", 0.9 ),
@@ -335,6 +335,8 @@ GameState.prototype.onStart = function( game ) {
 	if( game.settings.composer ) {
 		var renderPass = new THREE.RenderPass( this.scene, this.camera );
 
+        //var bloomPass= new THREE.BloomPass();
+
 		var bokehPass = new THREE.BokehPass( this.scene, this.camera, {
 			focus: 		0.80,
 			aperture:	0.025,
@@ -349,6 +351,7 @@ GameState.prototype.onStart = function( game ) {
 		this.composer = new THREE.EffectComposer( game.renderer );
 
 		this.composer.addPass( renderPass );
+        //this.composer.addPass( bloomPass );
 		this.composer.addPass( bokehPass );
 	}
 
