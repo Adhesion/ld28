@@ -127,7 +127,8 @@ Main.prototype.getAssets = function() {
 				"sound/" + (prefix || "") + base + ".ogg"
 			],
 			type: 'audio',
-            buffer: window.main.settings.nowebaudio,
+            //buffer: window.main.settings.nowebaudio,
+            buffer: true,
 			callback: function( audio ) {
 				//if( !prefix ) {
 				//	window.hitSounds = window.hitSounds || [];
@@ -144,8 +145,8 @@ Main.prototype.getAssets = function() {
         getSound( "ld28-game", "", 0.6 ),
         getSound( "ld28-intro", "", 0.6 ),
         getSound( "ld28-boss", "", 0.5 ),
-        getSound( "bossdeath", "", 0.7 ),
-        getSound( "death", "", 0.75 ),
+        getSound( "bossdeath", "", 0.8 ),
+        getSound( "death", "", 0.8 ),
         getSound( "1", "hit", 0.9 ),
         getSound( "2", "hit", 0.9 ),
         getSound( "3", "hit", 0.9 ),
@@ -229,12 +230,13 @@ Main.prototype.update = function (newFrame) {
             var beatLength= 0.43478260869565217391304347826087; //magic math
             var nextBeat= this.lastBeat + beatLength;
             var curSongHowl= this.loader.get("sound/" + this.currentSong);
+            var duration= 160.0; //HAX
 
             // Wrap around if necessary
-            if( nextBeat >= curSongHowl._duration )
+            if( nextBeat >= duration )
                 nextBeat= 0.0;
 
-            if( (curSongHowl.pos() % curSongHowl._duration) > nextBeat ) {
+            if( (curSongHowl.pos() % duration) > nextBeat ) {
                 this.onBeat();
                 this.lastBeat= nextBeat;
             }
@@ -247,10 +249,18 @@ Main.prototype.update = function (newFrame) {
 	requestAnimFrame( this.callback );
 };
 
+Main.prototype.startMusic= function() {
+    this.loader.get("sound/ld28-intro").loop(true).play();
+    this.loader.get("sound/ld28-game").volume(0.0).loop(true).play();
+    this.loader.get("sound/ld28-open").volume(0.0).loop(true).play();
+    this.loader.get("sound/ld28-boss").volume(0.0).loop(true).play();
+    this.currentSong= "ld28-intro";
+}
+
 Main.prototype.fadeToSong = function(toSong) {
     // If first time, just play the given song
     if( !this.currentSong ) {
-        this.loader.get("sound/" + toSong).play().loop(true);
+        this.loader.get("sound/" + toSong).loop(true).play();
         this.currentSong= toSong;
         return;
     }
@@ -258,20 +268,21 @@ Main.prototype.fadeToSong = function(toSong) {
     else if( this.currentSong === toSong )
         return;
 
-    // Fade out current song, stop on end of fade
-    // Fade in next song at old song pos
+    // Fade out current song
+    // Fade in next song
     var curSong= this.loader.get("sound/" + this.currentSong);
     var nextSong= this.loader.get("sound/" + toSong);
-    curSong.fade( curSong.origVolume, 0.0, 250, function() { curSong.stop(); } );
-    nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
-    nextSong.pos( curSong.pos() % nextSong._duration );
-    this.currentSong= toSong;
 
-    // Reset beat detection if no web audio since songs will always restart from beginning
-    if( !curSong._webAudio ) {
-        this.lastBeat= 0.0;
-        this.onBeat();
-    }
+    // web audio method of changing position, disabled (needs to buffer uncompressed audio!! yowch!!)
+    //curSong.fade( curSong.origVolume, 0.0, 250, function() { curSong.stop(); } );
+    //nextSong.play().loop(true).fade( 0.0, nextSong.origVolume, 100 );
+    //nextSong.pos( curSong.pos() % nextSong._duration );
+
+    // non-web audio method, assumes songs are always playing (see startMusic)
+    curSong.fade( curSong.origVolume, 0.0, 250 );
+    nextSong.fade( 0.0, nextSong.origVolume, 250 );
+
+    this.currentSong= toSong;
 };
 
 Main.prototype.onBeat = function() {
@@ -626,8 +637,10 @@ Splash.prototype.onStart = function( game ) {
     game.controllers.push( this.controller );
 
     //game.loader.get("sound/intro").loop(true);
-    //game.loader.get("sound/intro").play();
-    game.fadeToSong("ld28-intro");
+    game.loader.get("sound/radmarslogo").stop();
+    window.main.startMusic();
+
+    //game.fadeToSong("ld28-intro");
 };
 
 Splash.prototype.resize = function( width, height ) {
