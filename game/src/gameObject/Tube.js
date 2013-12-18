@@ -7,7 +7,7 @@ function Tube() {
 		doubleSided: false
 	});
 */
-    this.tubeSegments = 70;
+    this.tubeSegments = 100;
     this.lastRoom = 10;
 
     var materials = [

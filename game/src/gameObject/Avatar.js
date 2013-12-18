@@ -41,7 +41,7 @@ function Avatar(tube, input, pathObjects) {
 	}
 
     this.ring = circle( 0xffffff, this.movementAmplitude );
-    this.holder.add( this.ring );
+    //this.holder.add( this.ring );
 
 
     this.wasdSpeed = 220;
@@ -159,7 +159,12 @@ Avatar.prototype.update = function (delta) {
     if(this.tubeIndex > this.tube.path.length - this.tube.lastRoom && !this.lastRoom){
         this.movementAmplitude = 1000;
         this.lastRoom = true;
-        this.holder.remove( this.ring );
+        //this.holder.remove( this.ring );
+    }
+
+    if(this.lastRoom){
+        //this.speed += dt;
+        //if(this.speed > 1000) this.speed = 1000;
     }
 
 	var dt = delta/1000;
