@@ -123,8 +123,8 @@ Main.prototype.getAssets = function() {
 			name: "sound/" + (prefix || "") + base,
 			volume: vol || 0.27,
 			urls: [
-				"sound/" + (prefix || "") + base + ".m4a",
-				"sound/" + (prefix || "") + base + ".ogg"
+                "sound/" + (prefix || "") + base + ".ogg",
+				"sound/" + (prefix || "") + base + ".m4a"
 			],
 			type: 'audio',
             //buffer: window.main.settings.nowebaudio,
